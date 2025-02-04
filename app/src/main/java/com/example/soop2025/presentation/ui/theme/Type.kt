@@ -1,4 +1,4 @@
-package com.example.soop2025.ui.theme
+package com.example.soop2025.presentation.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
