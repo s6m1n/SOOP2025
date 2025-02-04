@@ -2,4 +2,17 @@
 plugins {
     alias(libs.plugins.androidApplication) apply false
     alias(libs.plugins.jetbrainsKotlinAndroid) apply false
+    alias(libs.plugins.ktlint)
+}
+
+ktlint {
+    enableExperimentalRules.set(true)
+}
+
+dependencies {
+    ktlintRuleset(libs.compose.rules.ktlint)
+}
+
+allprojects {
+    apply(plugin = "org.jlleitschuh.gradle.ktlint")
 }
