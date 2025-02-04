@@ -21,4 +21,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "SOOP2025"
 include(":app")
- 
