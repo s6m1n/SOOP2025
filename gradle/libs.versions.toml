@@ -10,6 +10,7 @@ activityCompose = "1.9.3"
 composeBom = "2023.08.00"
 ktlint = "11.6.1"
 compose-rules = "0.4.5"
+ksp = "1.9.0-1.0.12"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -32,3 +33,4 @@ compose-rules-ktlint = { module = "io.nlopez.compose.rules:ktlint", version.ref 
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
