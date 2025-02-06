@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.sp
 import com.example.soop2025.R
 import com.example.soop2025.domain.model.repossearch.ReposSearch
 import com.example.soop2025.domain.model.repossearch.ReposSearchOwner
+import com.example.soop2025.presentation.ui.formatMetricSuffix
 
 @Composable
 fun SearchItem(
@@ -81,7 +82,7 @@ fun SearchItem(
                     .padding(end = 5.dp)
             )
             Text(
-                text = reposSearch.stargazersCount.toString(),
+                text = formatMetricSuffix(reposSearch.stargazersCount),
                 modifier = Modifier.padding(end = 10.dp)
             )
             reposSearch.language?.let {
