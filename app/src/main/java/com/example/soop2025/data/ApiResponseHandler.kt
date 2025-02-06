@@ -1,5 +1,10 @@
 package com.example.soop2025.data
 
+import com.example.soop2025.data.remote.ResponseResult
+import com.example.soop2025.data.remote.ResponseResult.Exception
+import com.example.soop2025.data.remote.ResponseResult.ServerError
+import com.example.soop2025.data.remote.ResponseResult.Success
+import com.example.soop2025.data.remote.Status
 import com.example.soop2025.di.NetworkModule.getErrorResponse
 import retrofit2.HttpException
 import retrofit2.Response
@@ -18,7 +23,7 @@ object ApiResponseHandler {
                 handleErrorResponse(response)
             }
         } catch (e: HttpException) {
-            ResponseResult.ServerError(
+            ServerError(
                 status = Status.Code(e.code()),
                 message = e.message()
             )
@@ -27,7 +32,7 @@ object ApiResponseHandler {
                 is UnknownHostException, is SocketException -> NETWORK_UNSTABLE
                 else -> e.message.toString()
             }
-            ResponseResult.Exception(e = e, message = message)
+            Exception(e = e, message = message)
         }
     }
 
@@ -35,9 +40,9 @@ object ApiResponseHandler {
         response: Response<T>,
         body: T?
     ): ResponseResult<T> = when {
-        response.code() == HttpStatusCode.CREATED -> ResponseResult.Success(body as T)
-        response.code() == HttpStatusCode.NO_CONTENT -> ResponseResult.Success(Unit as T)
-        body != null -> ResponseResult.Success(body)
+        response.code() == HttpStatusCode.CREATED -> Success(body as T)
+        response.code() == HttpStatusCode.NO_CONTENT -> Success(Unit as T)
+        body != null -> Success(body)
         else -> handleErrorResponse(response)
     }
 
@@ -46,7 +51,7 @@ object ApiResponseHandler {
     ): ResponseResult<T> {
         val errorBody = response.errorBody() ?: throw IllegalArgumentException(ERROR_BODY_NOT_FOUND)
         val errorResponse = getErrorResponse(errorBody)
-        return ResponseResult.ServerError(
+        return ServerError(
             status = Status.Message(errorResponse.status),
             message = errorResponse.message
         )
@@ -54,7 +59,7 @@ object ApiResponseHandler {
 
     suspend fun <T : Any> ResponseResult<T>.onSuccess(executable: suspend (T) -> Unit): ResponseResult<T> =
         apply {
-            if (this is ResponseResult.Success<T>) {
+            if (this is Success<T>) {
                 executable(data)
             }
         }
@@ -63,14 +68,14 @@ object ApiResponseHandler {
         executable: suspend (status: Status, message: String) -> Unit
     ): ResponseResult<T> =
         apply {
-            if (this is ResponseResult.ServerError<T>) {
+            if (this is ServerError<T>) {
                 executable(status, message)
             }
         }
 
     suspend fun <T : Any> ResponseResult<T>.onException(executable: suspend (e: Throwable, message: String) -> Unit): ResponseResult<T> =
         apply {
-            if (this is ResponseResult.Exception<T>) {
+            if (this is Exception<T>) {
                 executable(e, message)
             }
         }
