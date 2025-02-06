@@ -46,6 +46,13 @@ internal object NetworkModule {
             .build()
     }
 
+    fun getErrorResponse(errorBody: ResponseBody): ErrorResponse {
+        return provideRetrofit().responseBodyConverter<ErrorResponse>(
+            ErrorResponse::class.java,
+            ErrorResponse::class.java.annotations
+        ).convert(errorBody) ?: throw IllegalArgumentException("errorBody를 변환할 수 없습니다.")
+    }
+
     private const val BASE_URL = "https://api.github.com/" // local properties
     private const val CONTENT_TYPE = "application/json"
 }
