@@ -5,6 +5,8 @@ plugins {
     alias(libs.plugins.ktlint)
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.hiltAndroid) apply false
+    alias(libs.plugins.kotlin.jvm) apply false
+    alias(libs.plugins.kotlin.serialization) apply false
 }
 
 ktlint {
