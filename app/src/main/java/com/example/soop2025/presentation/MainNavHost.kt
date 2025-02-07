@@ -4,15 +4,18 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.example.soop2025.presentation.ui.screen.ReposDetailScreen
 import com.example.soop2025.presentation.ui.screen.ReposSearchScreen
 
 @Composable
 fun MainNavHost(
     navController: NavHostController,
-    reposSearchViewModel: ReposSearchViewModel
+    reposSearchViewModel: ReposSearchViewModel,
+    reposDetailViewModel: ReposDetailViewModel
 ) {
     NavHost(
         navController = navController,
@@ -29,9 +32,20 @@ fun MainNavHost(
             }
         }
         composable(
-            route = "깃허브_레포_상세/{userName}/{repoName}"
-        ) {
-            ReposDetailScreen()
+            route = "깃허브_레포_상세/{userName}/{repoName}",
+            arguments = listOf(
+                navArgument("userName") { type = NavType.StringType },
+                navArgument("repoName") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val userName = backStackEntry.arguments?.getString("userName") ?: ""
+            val repoName = backStackEntry.arguments?.getString("repoName") ?: ""
+
+            ReposDetailScreen(
+                reposDetailViewModel,
+                userName,
+                repoName
+            )
         }
     }
 }
