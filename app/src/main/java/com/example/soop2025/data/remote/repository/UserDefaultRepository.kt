@@ -2,6 +2,8 @@ package com.example.soop2025.data.remote.repository
 
 import com.example.soop2025.data.ApiResponseHandler.handleApiResponse
 import com.example.soop2025.data.remote.ResponseResult
+import com.example.soop2025.data.remote.ResponseResult.Exception
+import com.example.soop2025.data.remote.ResponseResult.Success
 import com.example.soop2025.data.remote.api.UserApiService
 import com.example.soop2025.data.remote.model.response.mapper.toUserDetail
 import com.example.soop2025.data.remote.model.response.mapper.toUserRepos
@@ -20,13 +22,8 @@ class UserDefaultRepository @Inject constructor(
         return flow {
             emit(
                 when (responseResult) {
-                    is ResponseResult.Success -> {
-                        ResponseResult.Success(responseResult.data.toUserDetail())
-                    }
-
-                    is ResponseResult.Exception -> {
-                        ResponseResult.Exception(responseResult.e, responseResult.message)
-                    }
+                    is Success -> Success(responseResult.data.toUserDetail())
+                    is Exception -> Exception(responseResult.e, responseResult.message)
                 }
             )
         }
@@ -37,13 +34,8 @@ class UserDefaultRepository @Inject constructor(
         return flow {
             emit(
                 when (responseResult) {
-                    is ResponseResult.Success -> {
-                        ResponseResult.Success(responseResult.data.toUserRepos())
-                    }
-
-                    is ResponseResult.Exception -> {
-                        ResponseResult.Exception(responseResult.e, responseResult.message)
-                    }
+                    is Success -> Success(responseResult.data.toUserRepos())
+                    is Exception -> Exception(responseResult.e, responseResult.message)
                 }
             )
         }

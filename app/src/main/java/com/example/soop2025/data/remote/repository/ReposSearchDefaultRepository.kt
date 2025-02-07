@@ -2,6 +2,8 @@ package com.example.soop2025.data.remote.repository
 
 import com.example.soop2025.data.ApiResponseHandler.handleApiResponse
 import com.example.soop2025.data.remote.ResponseResult
+import com.example.soop2025.data.remote.ResponseResult.Exception
+import com.example.soop2025.data.remote.ResponseResult.Success
 import com.example.soop2025.data.remote.api.ReposSearchApiService
 import com.example.soop2025.data.remote.model.response.mapper.toReposSearches
 import com.example.soop2025.domain.ReposSearchRepository
@@ -22,13 +24,8 @@ class ReposSearchDefaultRepository @Inject constructor(
         return flow {
             emit(
                 when (responseResult) {
-                    is ResponseResult.Success -> ResponseResult.Success(
-                        responseResult.data.toReposSearches()
-                    )
-                    is ResponseResult.Exception -> ResponseResult.Exception(
-                        responseResult.e,
-                        responseResult.message
-                    )
+                    is Success -> Success(responseResult.data.toReposSearches())
+                    is Exception -> Exception(responseResult.e, responseResult.message)
                 }
             )
         }
