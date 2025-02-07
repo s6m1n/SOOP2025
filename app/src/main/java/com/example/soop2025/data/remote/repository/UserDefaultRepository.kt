@@ -27,10 +27,6 @@ class UserDefaultRepository @Inject constructor(
                     is ResponseResult.Exception -> {
                         ResponseResult.Exception(responseResult.e, responseResult.message)
                     }
-
-                    is ResponseResult.ServerError -> {
-                        ResponseResult.ServerError(responseResult.status, responseResult.message)
-                    }
                 }
             )
         }
@@ -47,10 +43,6 @@ class UserDefaultRepository @Inject constructor(
 
                     is ResponseResult.Exception -> {
                         ResponseResult.Exception(responseResult.e, responseResult.message)
-                    }
-
-                    is ResponseResult.ServerError -> {
-                        ResponseResult.ServerError(responseResult.status, responseResult.message)
                     }
                 }
             )

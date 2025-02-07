@@ -47,7 +47,6 @@ class ReposDetailViewModel @Inject constructor(
             userRepository.fetchUserDetail(userName).collect {
                 when (it) {
                     is ResponseResult.Exception -> _errorMessage.emit(it.message)
-                    is ResponseResult.ServerError -> _errorMessage.emit(it.message)
                     is ResponseResult.Success -> _userDetailState.emit(it.data)
                 }
             }
@@ -59,7 +58,6 @@ class ReposDetailViewModel @Inject constructor(
             userRepository.fetchUserRepos(userName).collect {
                 when (it) {
                     is ResponseResult.Exception -> _errorMessage.emit(it.message)
-                    is ResponseResult.ServerError -> _errorMessage.emit(it.message)
                     is ResponseResult.Success -> _userRepoState.emit(it.data)
                 }
             }

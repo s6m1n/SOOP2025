@@ -2,7 +2,8 @@ package com.example.soop2025.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.soop2025.data.remote.ResponseResult
+import com.example.soop2025.data.ApiResponseHandler.onException
+import com.example.soop2025.data.ApiResponseHandler.onSuccess
 import com.example.soop2025.domain.ReposSearchRepository
 import com.example.soop2025.domain.model.repossearch.ReposSearch
 import com.example.soop2025.presentation.ui.UiState
@@ -26,11 +27,13 @@ class ReposSearchViewModel @Inject constructor(
             reposSearchRepository.searchRepositories(
                 repoName,
                 page = 1
-            ).collect {
-                when (it) {
-                    is ResponseResult.Exception -> _searchResultState.emit(UiState.Error(it.message))
-                    is ResponseResult.ServerError -> _searchResultState.emit(UiState.Error(it.message))
-                    is ResponseResult.Success -> _searchResultState.emit(UiState.Success(it.data))
+            ).collect { response ->
+                response.onSuccess {
+                    _searchResultState.emit(
+                        UiState.Success(it)
+                    )
+                }.onException { _, message ->
+                    _searchResultState.emit(UiState.Error(message))
                 }
             }
         }

@@ -2,7 +2,6 @@ package com.example.soop2025.data.remote.repository
 
 import com.example.soop2025.data.ApiResponseHandler.handleApiResponse
 import com.example.soop2025.data.remote.ResponseResult.Exception
-import com.example.soop2025.data.remote.ResponseResult.ServerError
 import com.example.soop2025.data.remote.ResponseResult.Success
 import com.example.soop2025.data.remote.api.ReposApiService
 import com.example.soop2025.data.remote.model.response.mapper.toReposDetail
@@ -28,7 +27,6 @@ class ReposDefaultRepository @Inject constructor(
                 when (result) {
                     is Success -> UiState.Success(result.data.toReposDetail())
                     is Exception -> UiState.Error(result.message)
-                    is ServerError -> UiState.Error(result.message)
                 }
             )
         }

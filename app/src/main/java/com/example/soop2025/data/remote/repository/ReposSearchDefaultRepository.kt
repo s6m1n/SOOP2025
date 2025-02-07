@@ -22,17 +22,13 @@ class ReposSearchDefaultRepository @Inject constructor(
         return flow {
             emit(
                 when (responseResult) {
-                    is ResponseResult.Success -> {
-                        ResponseResult.Success(responseResult.data.toReposSearches())
-                    }
-
-                    is ResponseResult.Exception -> {
-                        ResponseResult.Exception(responseResult.e, responseResult.message)
-                    }
-
-                    is ResponseResult.ServerError -> {
-                        ResponseResult.ServerError(responseResult.status, responseResult.message)
-                    }
+                    is ResponseResult.Success -> ResponseResult.Success(
+                        responseResult.data.toReposSearches()
+                    )
+                    is ResponseResult.Exception -> ResponseResult.Exception(
+                        responseResult.e,
+                        responseResult.message
+                    )
                 }
             )
         }
