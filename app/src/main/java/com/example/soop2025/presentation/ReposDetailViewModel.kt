@@ -24,42 +24,50 @@ class ReposDetailViewModel @Inject constructor(
     private val _reposDetailState = MutableStateFlow<UiState<ReposDetail>>(UiState.Idle)
     val reposDetailState = _reposDetailState.asStateFlow()
 
-    private val _userDetailState = MutableStateFlow(UserDetail.ofEmpty())
+    private val _userDetailState = MutableStateFlow<UiState<UserDetail>>(UiState.Idle)
     val userDetailState = _userDetailState.asStateFlow()
 
-    private val _userRepoState = MutableStateFlow(UserRepositories(emptyList()))
+    private val _userRepoState = MutableStateFlow<UiState<UserRepositories>>(UiState.Idle)
     val userRepoState = _userRepoState.asStateFlow()
-
-    private val _errorMessage = MutableStateFlow("")
-    val errorMessage = _errorMessage.asStateFlow()
 
     fun fetchDetail(userName: String, repoName: String) {
         viewModelScope.launch {
             _reposDetailState.emit(UiState.Loading)
             reposRepository.fetchReposDetail(userName, repoName).collect {
-                _reposDetailState.value = it
+                _reposDetailState.emit(
+                    when (it) {
+                        is ResponseResult.Exception -> UiState.Error(it.message)
+                        is ResponseResult.Success -> UiState.Success(it.data)
+                    }
+                )
             }
         }
     }
 
     fun fetchUser(userName: String) {
         viewModelScope.launch {
+            _userDetailState.emit(UiState.Loading)
             userRepository.fetchUserDetail(userName).collect {
-                when (it) {
-                    is ResponseResult.Exception -> _errorMessage.emit(it.message)
-                    is ResponseResult.Success -> _userDetailState.emit(it.data)
-                }
+                _userDetailState.emit(
+                    when (it) {
+                        is ResponseResult.Exception -> UiState.Error(it.message)
+                        is ResponseResult.Success -> UiState.Success(it.data)
+                    }
+                )
             }
         }
     }
 
     fun fetchUserRepos(userName: String) {
         viewModelScope.launch {
+            _userRepoState.emit(UiState.Loading)
             userRepository.fetchUserRepos(userName).collect {
-                when (it) {
-                    is ResponseResult.Exception -> _errorMessage.emit(it.message)
-                    is ResponseResult.Success -> _userRepoState.emit(it.data)
-                }
+                _userRepoState.emit(
+                    when (it) {
+                        is ResponseResult.Exception -> UiState.Error(it.message)
+                        is ResponseResult.Success -> UiState.Success(it.data)
+                    }
+                )
             }
         }
     }

@@ -23,8 +23,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.soop2025.R
+import com.example.soop2025.domain.model.user.UserDetail
 import com.example.soop2025.domain.model.user.UserRepositories
 import com.example.soop2025.presentation.ReposDetailViewModel
+import com.example.soop2025.presentation.ui.UiState
 import com.example.soop2025.presentation.ui.component.CoilImage
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -35,13 +37,34 @@ fun UserBottomSheet(
     sheetState: SheetState,
     closeBottomSheet: () -> Unit
 ) {
-    val userDetailState = reposDetailViewModel.userDetailState.collectAsStateWithLifecycle().value
-    val userRepoState: UserRepositories =
+    val userDetailState: UiState<UserDetail> =
+        reposDetailViewModel.userDetailState.collectAsStateWithLifecycle().value
+    val userRepoState: UiState<UserRepositories> =
         reposDetailViewModel.userRepoState.collectAsStateWithLifecycle().value
 
     LaunchedEffect(key1 = Unit) { reposDetailViewModel.fetchUser(userName) }
     LaunchedEffect(key1 = Unit) { reposDetailViewModel.fetchUserRepos(userName) }
 
+    if (userDetailState is UiState.Success && userRepoState is UiState.Success) {
+        HandleSuccessUiState(
+            userDetailState.data,
+            userRepoState.data,
+            closeBottomSheet,
+            sheetState,
+            userName
+        )
+    }
+}
+
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
+private fun HandleSuccessUiState(
+    userDetail: UserDetail,
+    userRepo: UserRepositories,
+    closeBottomSheet: () -> Unit,
+    sheetState: SheetState,
+    userName: String
+) {
     ModalBottomSheet(
         onDismissRequest = {
             closeBottomSheet()
@@ -58,7 +81,7 @@ fun UserBottomSheet(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 CoilImage(
-                    imageUrl = userDetailState.profileImageUrl,
+                    imageUrl = userDetail.profileImageUrl,
                     contentDescription = stringResource(id = R.string.user_profile_image),
                     modifier = Modifier
                         .clip(CircleShape)
@@ -73,21 +96,21 @@ fun UserBottomSheet(
             }
             UserDetailText(
                 titleText = "Followers",
-                value = userDetailState.followers.toString()
+                value = userDetail.followers.toString()
             )
             UserDetailText(
                 titleText = "Following",
-                value = userDetailState.following.toString()
+                value = userDetail.following.toString()
             )
             UserDetailText(
                 titleText = "Languages",
-                value = userRepoState.languages.joinToString(", ")
+                value = userRepo.languages.joinToString(", ")
             )
             UserDetailText(
                 titleText = "Repositories",
-                value = userRepoState.repositoryCount.toString()
+                value = userRepo.repositoryCount.toString()
             )
-            userDetailState.bio?.let {
+            userDetail.bio?.let {
                 UserDetailText(
                     titleText = "Bio",
                     value = it
