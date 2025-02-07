@@ -23,6 +23,6 @@ interface UserApiService {
         private const val USERNAME_PARAM = "username"
 
         private const val USER_DETAIL_PATH = "$USERS_PATH/{$USERNAME_PARAM}"
-        private const val USER_REPOS_PATH = "$USERS_PATH$USERNAME_PARAM$REPOS_PATH"
+        private const val USER_REPOS_PATH = "$USERS_PATH/{$USERNAME_PARAM}$REPOS_PATH"
     }
 }
