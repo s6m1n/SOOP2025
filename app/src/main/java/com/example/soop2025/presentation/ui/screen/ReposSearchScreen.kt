@@ -2,12 +2,14 @@ package com.example.soop2025.presentation.ui.screen
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.soop2025.presentation.ReposSearchViewModel
+import com.example.soop2025.presentation.ui.UiState
+import com.example.soop2025.presentation.ui.component.CircularLoading
 import com.example.soop2025.presentation.ui.component.SearchLazyColumn
 import com.example.soop2025.presentation.ui.component.SearchTextField
 
@@ -28,10 +30,23 @@ fun ReposSearchScreen(
                 reposSearchViewModel.searchReposBy(searchValue)
             }
         )
-        SearchLazyColumn(
-            reposSearchViewModel.searchResult.collectAsState().value
-        ) { userName, repoName ->
-            onMoveReposDetailScreen(userName, repoName)
+        when (
+            val searchResultState =
+                reposSearchViewModel.searchResultState.collectAsStateWithLifecycle().value
+        ) {
+            is UiState.Success -> {
+                SearchLazyColumn(
+                    searchResultState.data
+                ) { userName, repoName ->
+                    onMoveReposDetailScreen(userName, repoName)
+                }
+            }
+
+            is UiState.Idle -> {}
+
+            is UiState.Loading -> CircularLoading()
+
+            is UiState.Error -> CircularLoading()
         }
     }
 }
