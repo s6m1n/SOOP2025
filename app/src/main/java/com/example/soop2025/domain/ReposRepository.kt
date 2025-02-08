@@ -5,5 +5,5 @@ import com.example.soop2025.domain.model.repos.Repos
 import kotlinx.coroutines.flow.Flow
 
 interface ReposRepository {
-    suspend fun fetchReposDetail(ownerName: String, repoName: String): Flow<ResponseResult<Repos>>
+    suspend fun fetchRepos(ownerName: String, repoName: String): Flow<ResponseResult<Repos>>
 }

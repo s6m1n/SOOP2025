@@ -16,7 +16,7 @@ class ReposDefaultRepository @Inject constructor(
     private val reposApiService: ReposApiService
 ) : ReposRepository {
 
-    override suspend fun fetchReposDetail(
+    override suspend fun fetchRepos(
         ownerName: String,
         repoName: String
     ): Flow<ResponseResult<Repos>> {

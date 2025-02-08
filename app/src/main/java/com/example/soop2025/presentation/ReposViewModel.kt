@@ -28,7 +28,7 @@ class ReposViewModel @Inject constructor(
     fun fetchRepos(userName: String, repoName: String) {
         viewModelScope.launch {
             _reposState.emit(ReposUiState.Loading)
-            reposRepository.fetchReposDetail(userName, repoName).collect {
+            reposRepository.fetchRepos(userName, repoName).collect {
                 _reposState.emit(
                     when (it) {
                         is ResponseResult.Exception -> ReposUiState.Error(it.message)
