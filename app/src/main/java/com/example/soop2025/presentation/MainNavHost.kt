@@ -19,27 +19,27 @@ fun MainNavHost(
 ) {
     NavHost(
         navController = navController,
-        startDestination = "깃허브_레포_검색",
+        startDestination = ROUTE_REPOS_SEARCH,
         modifier = Modifier.fillMaxSize()
     ) {
         composable(
-            route = "깃허브_레포_검색"
+            route = ROUTE_REPOS_SEARCH
         ) {
             ReposSearchScreen(
                 reposSearchViewModel
-            ) { userName, repoName -> // 얘네를 넘겨서
-                navController.navigate("깃허브_레포_상세/$userName/$repoName")
+            ) { userName, repoName ->
+                navController.navigate(ROUTE_REPOS_FORMAT.format(userName, repoName))
             }
         }
         composable(
-            route = "깃허브_레포_상세/{userName}/{repoName}",
+            route = ROUTE_REPOS,
             arguments = listOf(
-                navArgument("userName") { type = NavType.StringType },
-                navArgument("repoName") { type = NavType.StringType }
+                navArgument(ARG_USER_NAME) { type = NavType.StringType },
+                navArgument(ARG_REPOS_NAME) { type = NavType.StringType }
             )
         ) { backStackEntry ->
-            val userName = backStackEntry.arguments?.getString("userName") ?: ""
-            val repoName = backStackEntry.arguments?.getString("repoName") ?: ""
+            val userName = backStackEntry.arguments?.getString(ARG_USER_NAME) ?: ""
+            val repoName = backStackEntry.arguments?.getString(ARG_REPOS_NAME) ?: ""
 
             ReposScreen(
                 reposViewModel,
@@ -49,3 +49,11 @@ fun MainNavHost(
         }
     }
 }
+
+private const val ARG_USER_NAME = "userName"
+private const val ARG_REPOS_NAME = "repoName"
+
+private const val ROUTE_REPOS_SEARCH = "repos_search"
+private const val REPOS = "repos"
+private const val ROUTE_REPOS = "$REPOS/{$ARG_USER_NAME}/{$ARG_REPOS_NAME}"
+private const val ROUTE_REPOS_FORMAT = "$REPOS/%s/%s"
