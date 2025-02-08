@@ -37,11 +37,12 @@ private fun LazyListState.rememberIsBottomReached(): State<Boolean> {
 fun SearchLazyColumn(
     items: List<ReposSearch>,
     onItemClicked: (String, String) -> Unit,
+    onScrollNewPage: () -> Unit
 ) {
     val listState: LazyListState = rememberLazyListState()
     val isBottomReached by listState.rememberIsBottomReached()
 
-    LaunchedEffect(isBottomReached) {  }
+    LaunchedEffect(isBottomReached) { if (isBottomReached) onScrollNewPage() }
 
     LazyColumn(
         state = listState
@@ -68,5 +69,6 @@ private fun SearchLazyColumnPreview() {
     SearchLazyColumn(
         items = repositories,
         onItemClicked = { _, _ -> },
+        onScrollNewPage = {}
     )
 }

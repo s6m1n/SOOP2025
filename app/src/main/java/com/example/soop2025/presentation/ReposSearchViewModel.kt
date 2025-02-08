@@ -6,8 +6,9 @@ import com.example.soop2025.data.ApiResponseHandler.onException
 import com.example.soop2025.data.ApiResponseHandler.onSuccess
 import com.example.soop2025.domain.ReposSearchRepository
 import com.example.soop2025.domain.model.repossearch.ReposSearch
-import com.example.soop2025.presentation.ui.UiState
+import com.example.soop2025.presentation.ui.ReposSearchUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -18,24 +19,70 @@ class ReposSearchViewModel @Inject constructor(
     private val reposSearchRepository: ReposSearchRepository
 ) : ViewModel() {
 
-    private val _searchResultState = MutableStateFlow<UiState<List<ReposSearch>>>(UiState.Idle)
-    val searchResultState: StateFlow<UiState<List<ReposSearch>>> get() = _searchResultState
+    private val _searchResultState = MutableStateFlow<ReposSearchUiState>(ReposSearchUiState.Idle)
+    val searchResultState: StateFlow<ReposSearchUiState> get() = _searchResultState
+
+    private var searchKeyword: String = ""
+    private var searchJob: Job? = null
 
     fun searchReposBy(repoName: String) {
-        viewModelScope.launch {
-            _searchResultState.emit(UiState.Loading)
+        if (searchJob?.isActive == true) return
+        searchKeyword = repoName
+
+        searchJob = viewModelScope.launch {
+            _searchResultState.emit(ReposSearchUiState.Loading)
             reposSearchRepository.searchRepositories(
-                repoName,
+                repositoryName = repoName,
                 page = 1
             ).collect { response ->
                 response.onSuccess {
                     _searchResultState.emit(
-                        UiState.Success(it)
+                        ReposSearchUiState.Success(it)
                     )
                 }.onException { _, message ->
-                    _searchResultState.emit(UiState.Error(message))
+                    _searchResultState.emit(ReposSearchUiState.Error(message))
                 }
             }
         }
+    }
+
+    fun fetchNextPage() {
+        viewModelScope.launch {
+            val state = searchResultState.value
+            if (state is ReposSearchUiState.Success) {
+                loadNextPageIfNeeded(state.items)
+            }
+        }
+    }
+
+    private suspend fun loadNextPageIfNeeded(prevPageItems: List<ReposSearch>) {
+        val nextPageIndex = if (prevPageItems.size / ITEMS_PER_PAGE < 1) {
+            return
+        } else {
+            (prevPageItems.size + ITEMS_PER_PAGE) / ITEMS_PER_PAGE
+        }
+        fetchAndMergeSearchResults(nextPageIndex, prevPageItems)
+    }
+
+    private suspend fun fetchAndMergeSearchResults(
+        nextPageIndex: Int,
+        prevPageItems: List<ReposSearch>
+    ) {
+        reposSearchRepository.searchRepositories(
+            repositoryName = searchKeyword,
+            page = nextPageIndex
+        ).collect { response ->
+            response.onSuccess {
+                _searchResultState.emit(
+                    ReposSearchUiState.Success(prevPageItems + it)
+                )
+            }.onException { _, message ->
+                _searchResultState.emit(ReposSearchUiState.Error(message))
+            }
+        }
+    }
+
+    companion object {
+        const val ITEMS_PER_PAGE = 30
     }
 }
