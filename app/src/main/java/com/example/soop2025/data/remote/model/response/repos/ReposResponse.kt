@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
 
 @Serializable
-data class ReposDetailResponse(
+data class ReposResponse(
     @SerialName("id") val id: Long,
     @SerialName("node_id") val nodeId: String,
     @SerialName("name") val name: String,

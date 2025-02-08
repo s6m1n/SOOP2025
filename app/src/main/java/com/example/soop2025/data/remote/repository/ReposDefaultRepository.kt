@@ -5,7 +5,7 @@ import com.example.soop2025.data.remote.ResponseResult
 import com.example.soop2025.data.remote.ResponseResult.Exception
 import com.example.soop2025.data.remote.ResponseResult.Success
 import com.example.soop2025.data.remote.api.ReposApiService
-import com.example.soop2025.data.remote.model.response.mapper.toReposDetail
+import com.example.soop2025.data.remote.model.response.mapper.toRepos
 import com.example.soop2025.domain.ReposRepository
 import com.example.soop2025.domain.model.repos.ReposDetail
 import kotlinx.coroutines.flow.Flow
@@ -20,11 +20,11 @@ class ReposDefaultRepository @Inject constructor(
         ownerName: String,
         repoName: String
     ): Flow<ResponseResult<ReposDetail>> {
-        val responseResult = handleApiResponse { reposApiService.getReposDetail(ownerName, repoName) }
+        val responseResult = handleApiResponse { reposApiService.getRepos(ownerName, repoName) }
         return flow {
             emit(
                 when (responseResult) {
-                    is Success -> Success(responseResult.data.toReposDetail())
+                    is Success -> Success(responseResult.data.toRepos())
                     is Exception -> Exception(responseResult.e, responseResult.message)
                 }
             )

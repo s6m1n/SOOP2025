@@ -1,16 +1,16 @@
 package com.example.soop2025.data.remote.api
 
-import com.example.soop2025.data.remote.model.response.repos.ReposDetailResponse
+import com.example.soop2025.data.remote.model.response.repos.ReposResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface ReposApiService {
     @GET(REPOS_ENDPOINT)
-    suspend fun getReposDetail(
+    suspend fun getRepos(
         @Path(OWNER_PARAM) ownerName: String,
         @Path(REPO_PARAM) repoName: String
-    ): Response<ReposDetailResponse>
+    ): Response<ReposResponse>
 
     companion object {
         private const val REPOS_PATH = "/repos"
