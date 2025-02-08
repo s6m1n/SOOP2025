@@ -19,7 +19,7 @@ import com.example.soop2025.presentation.ui.component.SearchTextField
 @Composable
 fun ReposSearchScreen(
     reposSearchViewModel: ReposSearchViewModel,
-    onMoveReposDetailScreen: (String, String) -> Unit
+    onMoveReposScreen: (String, String) -> Unit
 ) {
     var searchValue by rememberSaveable { mutableStateOf("") }
 
@@ -37,7 +37,7 @@ fun ReposSearchScreen(
             ReposSearchUiState.Loading -> CircularLoading()
             is ReposSearchUiState.Success -> HandleSuccessUiState(
                 searchResultState = searchResultState,
-                onMoveReposDetailScreen = onMoveReposDetailScreen,
+                onMoveReposScreen = onMoveReposScreen,
                 onScrollNewPage = { reposSearchViewModel.fetchNextPage() }
             )
             is ReposSearchUiState.Error -> HandleErrorUiState(searchResultState)
@@ -48,12 +48,12 @@ fun ReposSearchScreen(
 @Composable
 private fun HandleSuccessUiState(
     searchResultState: ReposSearchUiState.Success,
-    onMoveReposDetailScreen: (String, String) -> Unit,
+    onMoveReposScreen: (String, String) -> Unit,
     onScrollNewPage: () -> Unit
 ) {
     SearchLazyColumn(
         items = searchResultState.data.reposSearches,
-        onItemClicked = onMoveReposDetailScreen,
+        onItemClicked = onMoveReposScreen,
         onScrollNewPage = onScrollNewPage
     )
 }
