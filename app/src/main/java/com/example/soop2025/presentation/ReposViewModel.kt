@@ -2,9 +2,6 @@ package com.example.soop2025.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.soop2025.data.remote.ApiResponseHandler.Companion.onException
-import com.example.soop2025.data.remote.ApiResponseHandler.Companion.onSuccess
-import com.example.soop2025.data.remote.ResponseResult
 import com.example.soop2025.domain.ReposRepository
 import com.example.soop2025.domain.UserRepository
 import com.example.soop2025.presentation.ui.ReposUiState
@@ -12,6 +9,7 @@ import com.example.soop2025.presentation.ui.UserUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -30,14 +28,12 @@ class ReposViewModel @Inject constructor(
     fun fetchRepos(userName: String, repoName: String) {
         viewModelScope.launch {
             _reposState.emit(ReposUiState.Loading)
-            reposRepository.fetchRepos(userName, repoName).collect {
-                _reposState.emit(
-                    when (it) {
-                        is ResponseResult.Exception -> ReposUiState.Error(it.message)
-                        is ResponseResult.Success -> ReposUiState.Success(it.data)
-                    }
-                )
-            }
+            reposRepository.fetchRepos(userName, repoName)
+                .catch {
+                    _reposState.emit(ReposUiState.Error(it.message.orEmpty()))
+                }.collect {
+                    _reposState.emit(ReposUiState.Success(it))
+                }
         }
     }
 
@@ -45,13 +41,10 @@ class ReposViewModel @Inject constructor(
         viewModelScope.launch {
             _userState.emit(UserUiState.Loading)
             userRepository.fetchUser(userName)
-                .collect { response ->
-                    response
-                        .onSuccess {
-                            _userState.emit(UserUiState.Success(it))
-                        }.onException { _, message ->
-                            _userState.emit(UserUiState.Error(message))
-                        }
+                .catch {
+                    _userState.emit(UserUiState.Error(it.message.orEmpty()))
+                }.collect {
+                    _userState.emit(UserUiState.Success(it))
                 }
         }
     }

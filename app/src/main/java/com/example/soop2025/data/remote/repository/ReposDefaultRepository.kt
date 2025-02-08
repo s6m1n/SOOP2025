@@ -1,9 +1,9 @@
 package com.example.soop2025.data.remote.repository
 
 import com.example.soop2025.data.remote.ApiResponseHandler
-import com.example.soop2025.data.remote.ResponseResult
-import com.example.soop2025.data.remote.ResponseResult.Exception
-import com.example.soop2025.data.remote.ResponseResult.Success
+import com.example.soop2025.data.remote.ApiResponseHandler.Companion.onException
+import com.example.soop2025.data.remote.ApiResponseHandler.Companion.onSuccess
+import com.example.soop2025.data.remote.NetworkFailException
 import com.example.soop2025.data.remote.api.ReposApiService
 import com.example.soop2025.data.remote.model.response.mapper.toRepos
 import com.example.soop2025.domain.ReposRepository
@@ -20,15 +20,15 @@ class ReposDefaultRepository @Inject constructor(
     override suspend fun fetchRepos(
         ownerName: String,
         repoName: String
-    ): Flow<ResponseResult<Repos>> {
-        val responseResult = apiResponseHandler.handle { reposApiService.getRepos(ownerName, repoName) }
+    ): Flow<Repos> {
+        val responseResult =
+            apiResponseHandler.handle { reposApiService.getRepos(ownerName, repoName) }
         return flow {
-            emit(
-                when (responseResult) {
-                    is Success -> Success(responseResult.data.toRepos())
-                    is Exception -> Exception(responseResult.e, responseResult.message)
-                }
-            )
+            responseResult.onSuccess {
+                emit(it.toRepos())
+            }.onException { throwable, message ->
+                throw NetworkFailException(throwable, message)
+            }
         }
     }
 }
