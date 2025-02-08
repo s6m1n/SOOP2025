@@ -5,9 +5,13 @@ import com.example.soop2025.data.remote.model.response.repossearch.ReposSearchRe
 import com.example.soop2025.data.remote.model.response.shared.OwnerResponse
 import com.example.soop2025.domain.model.repossearch.ReposSearch
 import com.example.soop2025.domain.model.repossearch.ReposSearchOwner
+import com.example.soop2025.domain.model.repossearch.ReposSearches
 
-fun ReposSearchResponse.toReposSearches(): List<ReposSearch> {
-    return this.items.map { it.toReposSearch() }
+fun ReposSearchResponse.toReposSearches(): ReposSearches {
+    return ReposSearches(
+        reposSearches = items.map { it.toReposSearch() },
+        totalCount = totalCount
+    )
 }
 
 fun ReposSearchItemResponse.toReposSearch(): ReposSearch {
