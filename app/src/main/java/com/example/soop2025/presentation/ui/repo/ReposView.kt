@@ -25,14 +25,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.soop2025.R
-import com.example.soop2025.domain.model.repos.ReposDetail
+import com.example.soop2025.domain.model.repos.Repos
 import com.example.soop2025.presentation.ui.component.CoilImage
 import com.example.soop2025.presentation.ui.component.RepoInformationText
 import com.example.soop2025.presentation.ui.formatMetricSuffix
 
 @Composable
 fun ReposView(
-    repos: ReposDetail,
+    repos: Repos,
     onButtonClicked: () -> Unit
 ) {
     Column(
@@ -124,7 +124,7 @@ private fun ReposViewPreview() {
     ReposView(repos = dummyRepos) {}
 }
 
-private val dummyRepos = ReposDetail(
+private val dummyRepos = Repos(
     id = 3111,
     repoName = "Sallie Wong",
     description = null,

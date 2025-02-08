@@ -9,7 +9,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.soop2025.domain.model.repos.ReposDetail
+import com.example.soop2025.domain.model.repos.Repos
 import com.example.soop2025.presentation.ReposViewModel
 import com.example.soop2025.presentation.ui.ReposUiState
 import com.example.soop2025.presentation.ui.component.CircularLoading
@@ -39,7 +39,7 @@ fun ReposScreen(
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 private fun HandleSuccessUiState(
-    repos: ReposDetail,
+    repos: Repos,
     userName: String,
     reposViewModel: ReposViewModel
 ) {

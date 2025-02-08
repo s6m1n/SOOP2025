@@ -7,7 +7,7 @@ import com.example.soop2025.data.remote.ResponseResult.Success
 import com.example.soop2025.data.remote.api.ReposApiService
 import com.example.soop2025.data.remote.model.response.mapper.toRepos
 import com.example.soop2025.domain.ReposRepository
-import com.example.soop2025.domain.model.repos.ReposDetail
+import com.example.soop2025.domain.model.repos.Repos
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -19,7 +19,7 @@ class ReposDefaultRepository @Inject constructor(
     override suspend fun fetchReposDetail(
         ownerName: String,
         repoName: String
-    ): Flow<ResponseResult<ReposDetail>> {
+    ): Flow<ResponseResult<Repos>> {
         val responseResult = handleApiResponse { reposApiService.getRepos(ownerName, repoName) }
         return flow {
             emit(

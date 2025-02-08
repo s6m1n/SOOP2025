@@ -1,6 +1,6 @@
 package com.example.soop2025.domain.model.repos
 
-data class ReposDetail(
+data class Repos(
     val id: Long,
     val repoName: String,
     val description: String?,
