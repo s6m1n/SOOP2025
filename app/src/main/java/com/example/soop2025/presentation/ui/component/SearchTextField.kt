@@ -25,14 +25,14 @@ import com.example.soop2025.R
 
 @Composable
 fun SearchTextField(
-    value: String,
-    onValueChange: (String) -> Unit,
     onSearchDone: (String) -> Unit
 ) {
+    var value by rememberSaveable { mutableStateOf("") }
+
     Row(modifier = Modifier.fillMaxWidth()) {
         TextField(
             value = value,
-            onValueChange = onValueChange,
+            onValueChange = { value = it },
             singleLine = true,
             colors = TextFieldDefaults.colors(
                 unfocusedContainerColor = Color.White,
@@ -58,13 +58,9 @@ fun SearchTextField(
 @Preview(showBackground = true)
 @Composable
 private fun SearchTextFieldPreview() {
-    var searchValue by rememberSaveable {
-        mutableStateOf("android")
-    }
+    var searchValue by rememberSaveable { mutableStateOf("Hello") }
     Column {
         SearchTextField(
-            value = searchValue,
-            onValueChange = { searchValue = it },
             onSearchDone = { searchValue = it }
         )
     }
