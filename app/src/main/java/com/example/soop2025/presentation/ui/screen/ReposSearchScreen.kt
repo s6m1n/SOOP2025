@@ -33,14 +33,13 @@ fun ReposSearchScreen(
             val searchResultState = reposSearchViewModel.searchResultState
                 .collectAsStateWithLifecycle().value
         ) {
-            is ReposSearchUiState.Idle -> {}
+            ReposSearchUiState.Idle -> {}
+            ReposSearchUiState.Loading -> CircularLoading()
             is ReposSearchUiState.Success -> HandleSuccessUiState(
                 searchResultState = searchResultState,
                 onMoveReposDetailScreen = onMoveReposDetailScreen,
                 onScrollNewPage = { reposSearchViewModel.fetchNextPage() }
             )
-
-            is ReposSearchUiState.Loading -> CircularLoading()
             is ReposSearchUiState.Error -> HandleErrorUiState(searchResultState)
         }
     }

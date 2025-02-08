@@ -24,8 +24,8 @@ fun ReposDetailScreen(
 ) {
     LaunchedEffect(key1 = Unit) { reposDetailViewModel.fetchReposDetail(userName, repoName) }
     when (val state = reposDetailViewModel.reposDetailState.collectAsStateWithLifecycle().value) {
-        is ReposDetailUiState.Idle -> {}
-        is ReposDetailUiState.Loading -> CircularLoading()
+        ReposDetailUiState.Idle -> {}
+        ReposDetailUiState.Loading -> CircularLoading()
         is ReposDetailUiState.Success -> HandleSuccessUiState(
             state.data,
             userName,
