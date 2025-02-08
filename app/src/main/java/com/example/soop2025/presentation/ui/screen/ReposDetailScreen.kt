@@ -11,7 +11,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.soop2025.domain.model.repos.ReposDetail
 import com.example.soop2025.presentation.ReposViewModel
-import com.example.soop2025.presentation.ui.ReposDetailUiState
+import com.example.soop2025.presentation.ui.ReposUiState
 import com.example.soop2025.presentation.ui.component.CircularLoading
 import com.example.soop2025.presentation.ui.repo.ReposDetailView
 import com.example.soop2025.presentation.ui.user.UserBottomSheet
@@ -24,15 +24,15 @@ fun ReposDetailScreen(
 ) {
     LaunchedEffect(key1 = Unit) { reposViewModel.fetchReposDetail(userName, repoName) }
     when (val state = reposViewModel.reposDetailState.collectAsStateWithLifecycle().value) {
-        ReposDetailUiState.Idle -> {}
-        ReposDetailUiState.Loading -> CircularLoading()
-        is ReposDetailUiState.Success -> HandleSuccessUiState(
+        ReposUiState.Idle -> {}
+        ReposUiState.Loading -> CircularLoading()
+        is ReposUiState.Success -> HandleSuccessUiState(
             state.data,
             userName,
             reposViewModel
         )
 
-        is ReposDetailUiState.Error -> {}
+        is ReposUiState.Error -> {}
     }
 }
 

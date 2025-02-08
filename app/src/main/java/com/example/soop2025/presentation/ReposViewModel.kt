@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.soop2025.data.remote.ResponseResult
 import com.example.soop2025.domain.ReposRepository
 import com.example.soop2025.domain.UserRepository
-import com.example.soop2025.presentation.ui.ReposDetailUiState
+import com.example.soop2025.presentation.ui.ReposUiState
 import com.example.soop2025.presentation.ui.UserUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,7 +19,7 @@ class ReposViewModel @Inject constructor(
     private val userRepository: UserRepository
 ) : ViewModel() {
 
-    private val _reposDetailState = MutableStateFlow<ReposDetailUiState>(ReposDetailUiState.Idle)
+    private val _reposDetailState = MutableStateFlow<ReposUiState>(ReposUiState.Idle)
     val reposDetailState = _reposDetailState.asStateFlow()
 
     private val _userState = MutableStateFlow<UserUiState>(UserUiState.Idle)
@@ -27,12 +27,12 @@ class ReposViewModel @Inject constructor(
 
     fun fetchReposDetail(userName: String, repoName: String) {
         viewModelScope.launch {
-            _reposDetailState.emit(ReposDetailUiState.Loading)
+            _reposDetailState.emit(ReposUiState.Loading)
             reposRepository.fetchReposDetail(userName, repoName).collect {
                 _reposDetailState.emit(
                     when (it) {
-                        is ResponseResult.Exception -> ReposDetailUiState.Error(it.message)
-                        is ResponseResult.Success -> ReposDetailUiState.Success(it.data)
+                        is ResponseResult.Exception -> ReposUiState.Error(it.message)
+                        is ResponseResult.Success -> ReposUiState.Success(it.data)
                     }
                 )
             }
