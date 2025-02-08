@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -24,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import com.example.soop2025.R
 
 @Composable
-fun SearchTextField(
+fun SearchTopBar(
     onSearchDone: (String) -> Unit
 ) {
     var value by rememberSaveable { mutableStateOf("") }
@@ -60,7 +61,7 @@ fun SearchTextField(
 private fun SearchTextFieldPreview() {
     var searchValue by rememberSaveable { mutableStateOf("Hello") }
     Column {
-        SearchTextField(
+        SearchTopBar(
             onSearchDone = { searchValue = it }
         )
     }

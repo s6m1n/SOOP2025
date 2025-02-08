@@ -11,7 +11,7 @@ import com.example.soop2025.presentation.ReposSearchViewModel
 import com.example.soop2025.presentation.ui.ReposSearchUiState
 import com.example.soop2025.presentation.ui.component.CircularLoading
 import com.example.soop2025.presentation.ui.component.SearchLazyColumn
-import com.example.soop2025.presentation.ui.component.SearchTextField
+import com.example.soop2025.presentation.ui.component.SearchTopBar
 
 @Composable
 fun ReposSearchScreen(
@@ -19,7 +19,7 @@ fun ReposSearchScreen(
     onMoveReposScreen: (String, String) -> Unit
 ) {
     Column {
-        SearchTextField(
+        SearchTopBar(
             onSearchDone = { keyWord -> reposSearchViewModel.searchReposBy(keyWord) }
         )
         when (
