@@ -39,6 +39,7 @@ fun SearchTopBar(
                 unfocusedContainerColor = Color.White,
                 focusedContainerColor = Color.White
             ),
+            keyboardActions = KeyboardActions(onDone = { onSearchDone(value) }),
             modifier = Modifier
                 .weight(1F)
         )
