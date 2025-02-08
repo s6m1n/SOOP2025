@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun UserDetailText(
+fun UserText(
     titleText: String,
     value: String
 ) {
@@ -38,9 +38,9 @@ fun UserDetailText(
 
 @Preview(showBackground = true)
 @Composable
-fun UserDetailTextPreview() {
-    UserDetailText(
-        titleText = "UserDetail Title",
+fun UserTextPreview() {
+    UserText(
+        titleText = "User Title",
         value = "124"
     )
 }

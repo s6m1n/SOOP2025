@@ -21,13 +21,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.soop2025.R
-import com.example.soop2025.domain.model.user.UserDetail
+import com.example.soop2025.domain.model.user.User
 import com.example.soop2025.presentation.ui.component.CoilImage
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun UserDetailModalBottomSheet(
-    userDetail: UserDetail,
+fun UserModalBottomSheet(
+    user: User,
     closeBottomSheet: () -> Unit,
     sheetState: SheetState,
     userName: String
@@ -48,7 +48,7 @@ fun UserDetailModalBottomSheet(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 CoilImage(
-                    imageUrl = userDetail.profileImageUrl,
+                    imageUrl = user.profileImageUrl,
                     contentDescription = stringResource(id = R.string.user_profile_image),
                     modifier = Modifier
                         .clip(CircleShape)
@@ -61,24 +61,24 @@ fun UserDetailModalBottomSheet(
                     modifier = Modifier
                 )
             }
-            UserDetailText(
+            UserText(
                 titleText = "Followers",
-                value = userDetail.followers.toString()
+                value = user.followers.toString()
             )
-            UserDetailText(
+            UserText(
                 titleText = "Following",
-                value = userDetail.following.toString()
+                value = user.following.toString()
             )
-            UserDetailText(
+            UserText(
                 titleText = "Languages",
-                value = userDetail.languages.joinToString(", ")
+                value = user.languages.joinToString(", ")
             )
-            UserDetailText(
+            UserText(
                 titleText = "Repositories",
-                value = userDetail.repositoryCount.toString()
+                value = user.repositoryCount.toString()
             )
-            userDetail.bio?.let {
-                UserDetailText(
+            user.bio?.let {
+                UserText(
                     titleText = "Bio",
                     value = it
                 )

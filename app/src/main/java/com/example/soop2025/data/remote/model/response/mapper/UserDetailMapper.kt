@@ -2,11 +2,11 @@ package com.example.soop2025.data.remote.model.response.mapper
 
 import com.example.soop2025.data.remote.model.response.user.UserReposResponse
 import com.example.soop2025.data.remote.model.response.user.UserResponse
-import com.example.soop2025.domain.model.user.UserDetail
+import com.example.soop2025.domain.model.user.User
 import com.example.soop2025.domain.model.user.UserRepos
 
-fun UserResponse.toUserDetail(repositories: List<UserRepos>): UserDetail {
-    return UserDetail(
+fun UserResponse.toUser(repositories: List<UserRepos>): User {
+    return User(
         id = id,
         name = login,
         followers = followers,

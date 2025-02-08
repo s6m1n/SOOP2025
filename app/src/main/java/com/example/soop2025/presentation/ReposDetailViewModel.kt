@@ -6,7 +6,7 @@ import com.example.soop2025.data.remote.ResponseResult
 import com.example.soop2025.domain.ReposRepository
 import com.example.soop2025.domain.UserRepository
 import com.example.soop2025.presentation.ui.ReposDetailUiState
-import com.example.soop2025.presentation.ui.UserDetailUiState
+import com.example.soop2025.presentation.ui.UserUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -22,8 +22,8 @@ class ReposDetailViewModel @Inject constructor(
     private val _reposDetailState = MutableStateFlow<ReposDetailUiState>(ReposDetailUiState.Idle)
     val reposDetailState = _reposDetailState.asStateFlow()
 
-    private val _userDetailState = MutableStateFlow<UserDetailUiState>(UserDetailUiState.Idle)
-    val userDetailState = _userDetailState.asStateFlow()
+    private val _userState = MutableStateFlow<UserUiState>(UserUiState.Idle)
+    val userState = _userState.asStateFlow()
 
     fun fetchReposDetail(userName: String, repoName: String) {
         viewModelScope.launch {
@@ -39,15 +39,15 @@ class ReposDetailViewModel @Inject constructor(
         }
     }
 
-    fun fetchUserDetail(userName: String) {
+    fun fetchUser(userName: String) {
         viewModelScope.launch {
-            _userDetailState.emit(UserDetailUiState.Loading)
-            userRepository.fetchUserDetail(userName)
+            _userState.emit(UserUiState.Loading)
+            userRepository.fetchUser(userName)
                 .collect {
-                    _userDetailState.emit(
+                    _userState.emit(
                         when (it) {
-                            is ResponseResult.Exception -> UserDetailUiState.Error(it.message)
-                            is ResponseResult.Success -> UserDetailUiState.Success(it.data)
+                            is ResponseResult.Exception -> UserUiState.Error(it.message)
+                            is ResponseResult.Success -> UserUiState.Success(it.data)
                         }
                     )
                 }

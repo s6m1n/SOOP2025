@@ -1,6 +1,6 @@
 package com.example.soop2025.domain.model.user
 
-data class UserDetail(
+data class User(
     val id: Long,
     val name: String,
     val followers: Int,

@@ -48,7 +48,7 @@ private fun HandleSuccessUiState(
     ReposDetailView(
         reposDetail = reposDetail,
         onButtonClicked = {
-            reposDetailViewModel.fetchUserDetail(userName)
+            reposDetailViewModel.fetchUser(userName)
             showBottomSheet = true
         }
     )

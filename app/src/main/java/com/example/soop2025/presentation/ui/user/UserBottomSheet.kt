@@ -8,7 +8,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.soop2025.presentation.ReposDetailViewModel
-import com.example.soop2025.presentation.ui.UserDetailUiState
+import com.example.soop2025.presentation.ui.UserUiState
 import com.example.soop2025.presentation.ui.component.CircularLoading
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -19,24 +19,24 @@ fun UserBottomSheet(
     sheetState: SheetState,
     closeBottomSheet: () -> Unit
 ) {
-    val userDetailState: UserDetailUiState =
-        reposDetailViewModel.userDetailState.collectAsStateWithLifecycle().value
+    val userState: UserUiState =
+        reposDetailViewModel.userState.collectAsStateWithLifecycle().value
 
-    when (userDetailState) {
-        UserDetailUiState.Idle -> {}
-        UserDetailUiState.Loading -> {
+    when (userState) {
+        UserUiState.Idle -> {}
+        UserUiState.Loading -> {
             CircularLoading()
         }
-        is UserDetailUiState.Success -> UserDetailModalBottomSheet(
-            userDetailState.data,
+        is UserUiState.Success -> UserModalBottomSheet(
+            userState.data,
             closeBottomSheet,
             sheetState,
             userName
         )
-        is UserDetailUiState.Error -> {
+        is UserUiState.Error -> {
             val context = LocalContext.current
             LaunchedEffect(Unit) {
-                Toast.makeText(context, userDetailState.message, Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, userState.message, Toast.LENGTH_SHORT).show()
             }
         }
     }
