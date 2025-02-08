@@ -8,21 +8,24 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.soop2025.domain.model.repos.Repos
 import com.example.soop2025.presentation.ReposViewModel
 import com.example.soop2025.presentation.ui.ReposUiState
+import com.example.soop2025.presentation.ui.UserUiState
 import com.example.soop2025.presentation.ui.component.CircularLoading
 import com.example.soop2025.presentation.ui.repo.ReposView
 import com.example.soop2025.presentation.ui.user.UserBottomSheet
 
 @Composable
 fun ReposScreen(
-    reposViewModel: ReposViewModel,
+    reposViewModel: ReposViewModel = hiltViewModel(),
     userName: String,
     repoName: String
 ) {
     LaunchedEffect(key1 = Unit) { reposViewModel.fetchRepos(userName, repoName) }
+
     when (val state = reposViewModel.reposState.collectAsStateWithLifecycle().value) {
         ReposUiState.Idle -> {}
         ReposUiState.Loading -> CircularLoading()
@@ -32,7 +35,7 @@ fun ReposScreen(
             reposViewModel
         )
 
-        is ReposUiState.Error -> {}
+        is ReposUiState.Error -> { }
     }
 }
 
@@ -53,11 +56,17 @@ private fun HandleSuccessUiState(
         }
     )
     if (showBottomSheet) {
-        UserBottomSheet(
-            reposViewModel = reposViewModel,
-            userName = userName,
-            sheetState = sheetState,
-            closeBottomSheet = { showBottomSheet = false }
-        )
+        when (val userState = reposViewModel.userState.collectAsStateWithLifecycle().value) {
+            UserUiState.Idle -> {}
+            UserUiState.Loading -> { CircularLoading() }
+            is UserUiState.Success -> {
+                UserBottomSheet(
+                    userState = userState,
+                    userName = userName,
+                    sheetState = sheetState
+                ) { showBottomSheet = false }
+            }
+            is UserUiState.Error -> {}
+        }
     }
 }

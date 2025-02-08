@@ -13,9 +13,7 @@ import com.example.soop2025.presentation.ui.screen.ReposSearchScreen
 
 @Composable
 fun MainNavHost(
-    navController: NavHostController,
-    reposSearchViewModel: ReposSearchViewModel,
-    reposViewModel: ReposViewModel
+    navController: NavHostController
 ) {
     NavHost(
         navController = navController,
@@ -26,10 +24,10 @@ fun MainNavHost(
             route = ROUTE_REPOS_SEARCH
         ) {
             ReposSearchScreen(
-                reposSearchViewModel
-            ) { userName, repoName ->
-                navController.navigate(ROUTE_REPOS_FORMAT.format(userName, repoName))
-            }
+                onMoveReposScreen = { userName, repoName ->
+                    navController.navigate(ROUTE_REPOS_FORMAT.format(userName, repoName))
+                }
+            )
         }
         composable(
             route = ROUTE_REPOS,
@@ -42,9 +40,8 @@ fun MainNavHost(
             val repoName = backStackEntry.arguments?.getString(ARG_REPOS_NAME) ?: ""
 
             ReposScreen(
-                reposViewModel,
-                userName,
-                repoName
+                userName = userName,
+                repoName = repoName
             )
         }
     }

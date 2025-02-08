@@ -9,6 +9,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.soop2025.presentation.ReposSearchViewModel
 import com.example.soop2025.presentation.ui.ReposSearchUiState
@@ -18,7 +19,7 @@ import com.example.soop2025.presentation.ui.component.SearchTextField
 
 @Composable
 fun ReposSearchScreen(
-    reposSearchViewModel: ReposSearchViewModel,
+    reposSearchViewModel: ReposSearchViewModel = hiltViewModel(),
     onMoveReposScreen: (String, String) -> Unit
 ) {
     var searchValue by rememberSaveable { mutableStateOf("") }
