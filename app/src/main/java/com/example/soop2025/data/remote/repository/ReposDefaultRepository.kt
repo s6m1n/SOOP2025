@@ -1,6 +1,6 @@
 package com.example.soop2025.data.remote.repository
 
-import com.example.soop2025.data.ApiResponseHandler.handleApiResponse
+import com.example.soop2025.data.remote.ApiResponseHandler
 import com.example.soop2025.data.remote.ResponseResult
 import com.example.soop2025.data.remote.ResponseResult.Exception
 import com.example.soop2025.data.remote.ResponseResult.Success
@@ -13,14 +13,15 @@ import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class ReposDefaultRepository @Inject constructor(
-    private val reposApiService: ReposApiService
+    private val reposApiService: ReposApiService,
+    private val apiResponseHandler: ApiResponseHandler
 ) : ReposRepository {
 
     override suspend fun fetchRepos(
         ownerName: String,
         repoName: String
     ): Flow<ResponseResult<Repos>> {
-        val responseResult = handleApiResponse { reposApiService.getRepos(ownerName, repoName) }
+        val responseResult = apiResponseHandler.handleApiResponse { reposApiService.getRepos(ownerName, repoName) }
         return flow {
             emit(
                 when (responseResult) {

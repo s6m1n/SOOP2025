@@ -2,8 +2,8 @@ package com.example.soop2025.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.soop2025.data.ApiResponseHandler.onException
-import com.example.soop2025.data.ApiResponseHandler.onSuccess
+import com.example.soop2025.data.remote.ApiResponseHandler.Companion.onException
+import com.example.soop2025.data.remote.ApiResponseHandler.Companion.onSuccess
 import com.example.soop2025.domain.ReposSearchRepository
 import com.example.soop2025.domain.model.repossearch.ReposSearches
 import com.example.soop2025.presentation.ui.ReposSearchUiState

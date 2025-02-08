@@ -1,6 +1,6 @@
 package com.example.soop2025.data.remote.repository
 
-import com.example.soop2025.data.ApiResponseHandler.handleApiResponse
+import com.example.soop2025.data.remote.ApiResponseHandler
 import com.example.soop2025.data.remote.ResponseResult
 import com.example.soop2025.data.remote.ResponseResult.Exception
 import com.example.soop2025.data.remote.ResponseResult.Success
@@ -18,16 +18,17 @@ import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class UserDefaultRepository @Inject constructor(
-    private val userApiService: UserApiService
+    private val userApiService: UserApiService,
+    private val apiResponseHandler: ApiResponseHandler
 ) : UserRepository {
 
     override suspend fun fetchUser(userName: String): Flow<ResponseResult<User>> =
         flow {
             coroutineScope {
                 val userDeferred =
-                    async { handleApiResponse { userApiService.getUser(userName) } }
+                    async { apiResponseHandler.handleApiResponse { userApiService.getUser(userName) } }
                 val userReposDeferred =
-                    async { handleApiResponse { userApiService.getUserRepos(userName) } }
+                    async { apiResponseHandler.handleApiResponse { userApiService.getUserRepos(userName) } }
 
                 val userResult = userDeferred.await()
                 val userReposResult = userReposDeferred.await()
