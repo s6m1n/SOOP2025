@@ -6,10 +6,11 @@ data class UserDetail(
     val followers: Int,
     val following: Int,
     val profileImageUrl: String,
-    val bio: String?
+    val bio: String?,
+    val repositories: List<UserRepos>
 ) {
-
-    companion object {
-        fun ofEmpty() = UserDetail(0, "", 0, 0, "", "")
-    }
+    val repositoryCount = repositories.size
+    val languages = repositories.mapNotNull {
+        it.language
+    }.toSet()
 }

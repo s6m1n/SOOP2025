@@ -53,7 +53,7 @@ private fun HandleSuccessUiState(
     onScrollNewPage: () -> Unit
 ) {
     SearchLazyColumn(
-        items = searchResultState.items,
+        items = searchResultState.data.reposSearches,
         onItemClicked = onMoveReposDetailScreen,
         onScrollNewPage = onScrollNewPage
     )

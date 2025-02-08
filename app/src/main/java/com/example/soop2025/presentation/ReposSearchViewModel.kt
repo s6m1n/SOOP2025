@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.soop2025.data.ApiResponseHandler.onException
 import com.example.soop2025.data.ApiResponseHandler.onSuccess
 import com.example.soop2025.domain.ReposSearchRepository
-import com.example.soop2025.domain.model.repossearch.ReposSearch
+import com.example.soop2025.domain.model.repossearch.ReposSearches
 import com.example.soop2025.presentation.ui.ReposSearchUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -49,40 +49,24 @@ class ReposSearchViewModel @Inject constructor(
     fun fetchNextPage() {
         viewModelScope.launch {
             val state = searchResultState.value
-            if (state is ReposSearchUiState.Success) {
-                loadNextPageIfNeeded(state.items)
+            if (state is ReposSearchUiState.Success && state.data.hasNextPage) {
+                fetchAndMergeSearchResults(state.data)
             }
         }
     }
 
-    private suspend fun loadNextPageIfNeeded(prevPageItems: List<ReposSearch>) {
-        val nextPageIndex = if (prevPageItems.size / ITEMS_PER_PAGE < 1) {
-            return
-        } else {
-            (prevPageItems.size + ITEMS_PER_PAGE) / ITEMS_PER_PAGE
-        }
-        fetchAndMergeSearchResults(nextPageIndex, prevPageItems)
-    }
-
-    private suspend fun fetchAndMergeSearchResults(
-        nextPageIndex: Int,
-        prevPageItems: List<ReposSearch>
-    ) {
+    private suspend fun fetchAndMergeSearchResults(reposSearches: ReposSearches) {
         reposSearchRepository.searchRepositories(
             repositoryName = searchKeyword,
-            page = nextPageIndex
+            page = reposSearches.nextPageIndex
         ).collect { response ->
             response.onSuccess {
                 _searchResultState.emit(
-                    ReposSearchUiState.Success(prevPageItems + it)
+                    ReposSearchUiState.Success(reposSearches.mergeWith(it))
                 )
             }.onException { _, message ->
                 _searchResultState.emit(ReposSearchUiState.Error(message))
             }
         }
-    }
-
-    companion object {
-        const val ITEMS_PER_PAGE = 30
     }
 }

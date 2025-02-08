@@ -1,29 +1,27 @@
 package com.example.soop2025.data.remote.model.response.mapper
 
-import com.example.soop2025.data.remote.model.response.user.UserDetailResponse
 import com.example.soop2025.data.remote.model.response.user.UserReposResponse
+import com.example.soop2025.data.remote.model.response.user.UserResponse
 import com.example.soop2025.domain.model.user.UserDetail
 import com.example.soop2025.domain.model.user.UserRepos
-import com.example.soop2025.domain.model.user.UserRepositories
 
-fun UserDetailResponse.toUserDetail(): UserDetail {
+fun UserResponse.toUserDetail(repositories: List<UserRepos>): UserDetail {
     return UserDetail(
         id = id,
         name = login,
         followers = followers,
         following = following,
         profileImageUrl = avatarUrl,
-        bio = bio
+        bio = bio,
+        repositories = repositories
     )
 }
 
-fun List<UserReposResponse>.toUserRepos(): UserRepositories {
-    return UserRepositories(this.map { it.toUserRepository() })
-}
-
-private fun UserReposResponse.toUserRepository(): UserRepos {
-    return UserRepos(
-        id = id,
-        language = language
-    )
+fun List<UserReposResponse>.toUserRepository(): List<UserRepos> {
+    return this.map {
+        UserRepos(
+            id = it.id,
+            language = it.language
+        )
+    }
 }
