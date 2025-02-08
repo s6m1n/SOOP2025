@@ -1,12 +1,15 @@
-package com.example.soop2025.data
+package com.example.soop2025.data.remote
 
-import com.example.soop2025.data.remote.ResponseResult
 import com.example.soop2025.data.remote.ResponseResult.Exception
 import com.example.soop2025.data.remote.ResponseResult.Success
-import com.example.soop2025.di.NetworkModule.getErrorResponse
 import retrofit2.Response
+import javax.inject.Inject
+import javax.inject.Singleton
 
-object ApiResponseHandler {
+@Singleton
+class ApiResponseHandler @Inject constructor(
+    private val errorResponseConverter: ErrorResponseConverter
+) {
 
     suspend fun <T : Any> handleApiResponse(execute: suspend () -> Response<T>): ResponseResult<T> {
         return try {
@@ -39,31 +42,33 @@ object ApiResponseHandler {
         response: Response<T>
     ): ResponseResult<T> {
         val errorBody = response.errorBody() ?: throw IllegalArgumentException(ERROR_BODY_NOT_FOUND)
-        val errorResponse = getErrorResponse(errorBody)
+        val errorResponse = errorResponseConverter.convert(errorBody)
         return Exception(
             e = IllegalStateException("Server Error: ${response.code()}"),
             message = errorResponse.message
         )
     }
 
-    suspend fun <T : Any> ResponseResult<T>.onSuccess(executable: suspend (T) -> Unit): ResponseResult<T> =
-        apply {
-            if (this is Success<T>) {
-                executable(data)
-            }
+    companion object {
+        private object HttpStatusCode {
+            const val CREATED = 201
+            const val NO_CONTENT = 204
         }
 
-    suspend fun <T : Any> ResponseResult<T>.onException(executable: suspend (e: Throwable, message: String) -> Unit): ResponseResult<T> =
-        apply {
-            if (this is Exception<T>) {
-                executable(e, message)
-            }
-        }
+        private const val ERROR_BODY_NOT_FOUND = "errorBody를 찾을 수 없습니다."
 
-    private object HttpStatusCode {
-        const val CREATED = 201
-        const val NO_CONTENT = 204
+        suspend fun <T : Any> ResponseResult<T>.onSuccess(executable: suspend (T) -> Unit): ResponseResult<T> =
+            apply {
+                if (this is Success<T>) {
+                    executable(data)
+                }
+            }
+
+        suspend fun <T : Any> ResponseResult<T>.onException(executable: suspend (e: Throwable, message: String) -> Unit): ResponseResult<T> =
+            apply {
+                if (this is Exception<T>) {
+                    executable(e, message)
+                }
+            }
     }
-
-    private const val ERROR_BODY_NOT_FOUND = "errorBody를 찾을 수 없습니다."
 }
