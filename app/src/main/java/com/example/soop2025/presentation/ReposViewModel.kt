@@ -19,17 +19,17 @@ class ReposViewModel @Inject constructor(
     private val userRepository: UserRepository
 ) : ViewModel() {
 
-    private val _reposDetailState = MutableStateFlow<ReposUiState>(ReposUiState.Idle)
-    val reposDetailState = _reposDetailState.asStateFlow()
+    private val _reposState = MutableStateFlow<ReposUiState>(ReposUiState.Idle)
+    val reposState = _reposState.asStateFlow()
 
     private val _userState = MutableStateFlow<UserUiState>(UserUiState.Idle)
     val userState = _userState.asStateFlow()
 
-    fun fetchReposDetail(userName: String, repoName: String) {
+    fun fetchRepos(userName: String, repoName: String) {
         viewModelScope.launch {
-            _reposDetailState.emit(ReposUiState.Loading)
+            _reposState.emit(ReposUiState.Loading)
             reposRepository.fetchReposDetail(userName, repoName).collect {
-                _reposDetailState.emit(
+                _reposState.emit(
                     when (it) {
                         is ResponseResult.Exception -> ReposUiState.Error(it.message)
                         is ResponseResult.Success -> ReposUiState.Success(it.data)

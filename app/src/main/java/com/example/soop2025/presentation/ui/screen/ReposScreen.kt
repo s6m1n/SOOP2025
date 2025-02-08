@@ -17,13 +17,13 @@ import com.example.soop2025.presentation.ui.repo.ReposDetailView
 import com.example.soop2025.presentation.ui.user.UserBottomSheet
 
 @Composable
-fun ReposDetailScreen(
+fun ReposScreen(
     reposViewModel: ReposViewModel,
     userName: String,
     repoName: String
 ) {
-    LaunchedEffect(key1 = Unit) { reposViewModel.fetchReposDetail(userName, repoName) }
-    when (val state = reposViewModel.reposDetailState.collectAsStateWithLifecycle().value) {
+    LaunchedEffect(key1 = Unit) { reposViewModel.fetchRepos(userName, repoName) }
+    when (val state = reposViewModel.reposState.collectAsStateWithLifecycle().value) {
         ReposUiState.Idle -> {}
         ReposUiState.Loading -> CircularLoading()
         is ReposUiState.Success -> HandleSuccessUiState(
@@ -39,14 +39,14 @@ fun ReposDetailScreen(
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 private fun HandleSuccessUiState(
-    reposDetail: ReposDetail,
+    repos: ReposDetail,
     userName: String,
     reposViewModel: ReposViewModel
 ) {
     var showBottomSheet by rememberSaveable { mutableStateOf(false) }
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     ReposDetailView(
-        reposDetail = reposDetail,
+        reposDetail = repos,
         onButtonClicked = {
             reposViewModel.fetchUser(userName)
             showBottomSheet = true

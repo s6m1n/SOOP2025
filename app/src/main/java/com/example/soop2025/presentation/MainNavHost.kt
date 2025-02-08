@@ -8,7 +8,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.example.soop2025.presentation.ui.screen.ReposDetailScreen
+import com.example.soop2025.presentation.ui.screen.ReposScreen
 import com.example.soop2025.presentation.ui.screen.ReposSearchScreen
 
 @Composable
@@ -41,7 +41,7 @@ fun MainNavHost(
             val userName = backStackEntry.arguments?.getString("userName") ?: ""
             val repoName = backStackEntry.arguments?.getString("repoName") ?: ""
 
-            ReposDetailScreen(
+            ReposScreen(
                 reposViewModel,
                 userName,
                 repoName
