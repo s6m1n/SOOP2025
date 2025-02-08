@@ -1,7 +1,7 @@
 package com.example.soop2025.data.remote.repository
 
 import com.example.soop2025.data.remote.ApiResponseHandler
-import com.example.soop2025.data.remote.ResponseResult
+import com.example.soop2025.data.remote.NetworkFailException
 import com.example.soop2025.data.remote.ResponseResult.Exception
 import com.example.soop2025.data.remote.ResponseResult.Success
 import com.example.soop2025.data.remote.api.ReposSearchApiService
@@ -19,19 +19,19 @@ class ReposSearchDefaultRepository @Inject constructor(
     override suspend fun searchRepositories(
         repositoryName: String,
         page: Int
-    ): Flow<ResponseResult<ReposSearches>> {
+    ): Flow<ReposSearches> {
         val responseResult =
             apiResponseHandler.handle { reposSearchApiService.searchRepositories(repositoryName, page) }
         return flow {
-            emit(
-                when (responseResult) {
-                    is Success -> {
-                        Success(responseResult.data.toReposSearches())
-                    }
-
-                    is Exception -> Exception(responseResult.e, responseResult.message)
+            when (responseResult) {
+                is Success -> {
+                    emit(
+                        responseResult.data.toReposSearches()
+                    )
                 }
-            )
+
+                is Exception -> throw NetworkFailException(responseResult.e, responseResult.message)
+            }
         }
     }
 }

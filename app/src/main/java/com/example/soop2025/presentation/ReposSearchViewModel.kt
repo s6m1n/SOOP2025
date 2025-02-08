@@ -11,6 +11,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -34,14 +35,12 @@ class ReposSearchViewModel @Inject constructor(
             reposSearchRepository.searchRepositories(
                 repositoryName = repoName,
                 page = 1
-            ).collect { response ->
-                response.onSuccess {
-                    _searchResultState.emit(
-                        ReposSearchUiState.Success(it)
-                    )
-                }.onException { _, message ->
-                    _searchResultState.emit(ReposSearchUiState.Error(message))
-                }
+            ).catch {
+                _searchResultState.emit(ReposSearchUiState.Error(it.message.orEmpty()))
+            }.collect {
+                _searchResultState.emit(
+                    ReposSearchUiState.Success(it)
+                )
             }
         }
     }
@@ -59,14 +58,12 @@ class ReposSearchViewModel @Inject constructor(
         reposSearchRepository.searchRepositories(
             repositoryName = searchKeyword,
             page = reposSearches.nextPageIndex
-        ).collect { response ->
-            response.onSuccess {
-                _searchResultState.emit(
-                    ReposSearchUiState.Success(reposSearches.mergeWith(it))
-                )
-            }.onException { _, message ->
-                _searchResultState.emit(ReposSearchUiState.Error(message))
-            }
+        ).catch {
+            _searchResultState.emit(ReposSearchUiState.Error(it.message.orEmpty()))
+        }.collect {
+            _searchResultState.emit(
+                ReposSearchUiState.Success(reposSearches.mergeWith(it))
+            )
         }
     }
 }
