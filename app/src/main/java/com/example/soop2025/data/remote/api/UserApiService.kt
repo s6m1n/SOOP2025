@@ -1,7 +1,7 @@
 package com.example.soop2025.data.remote.api
 
-import com.example.soop2025.data.remote.model.response.user.UserReposResponse
-import com.example.soop2025.data.remote.model.response.user.UserResponse
+import com.example.soop2025.data.model.user.UserReposResponse
+import com.example.soop2025.data.model.user.UserResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path

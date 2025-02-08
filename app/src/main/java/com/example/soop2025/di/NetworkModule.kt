@@ -1,7 +1,7 @@
 package com.example.soop2025.di
 
+import com.example.soop2025.data.model.shared.ErrorResponse
 import com.example.soop2025.data.remote.ErrorResponseConverter
-import com.example.soop2025.data.remote.model.response.shared.ErrorResponse
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides

@@ -1,6 +1,6 @@
 package com.example.soop2025.data.remote.api
 
-import com.example.soop2025.data.remote.model.response.repossearch.ReposSearchResponse
+import com.example.soop2025.data.model.repossearch.ReposSearchResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query

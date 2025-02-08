@@ -8,8 +8,8 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.example.soop2025.presentation.ui.screen.ReposScreen
-import com.example.soop2025.presentation.ui.screen.ReposSearchScreen
+import com.example.soop2025.presentation.repos.ReposScreen
+import com.example.soop2025.presentation.search.ReposSearchScreen
 
 @Composable
 fun MainNavHost(
