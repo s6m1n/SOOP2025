@@ -1,5 +1,6 @@
 package com.example.soop2025.presentation.ui.repo
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -38,6 +39,7 @@ fun ReposView(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(Color.White)
             .padding(horizontal = 20.dp)
     ) {
         Spacer(modifier = Modifier.height(30.dp))
