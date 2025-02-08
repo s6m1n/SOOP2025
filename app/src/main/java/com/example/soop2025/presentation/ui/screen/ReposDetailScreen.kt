@@ -10,7 +10,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.soop2025.domain.model.repos.ReposDetail
-import com.example.soop2025.presentation.ReposDetailViewModel
+import com.example.soop2025.presentation.ReposViewModel
 import com.example.soop2025.presentation.ui.ReposDetailUiState
 import com.example.soop2025.presentation.ui.component.CircularLoading
 import com.example.soop2025.presentation.ui.repo.ReposDetailView
@@ -18,18 +18,18 @@ import com.example.soop2025.presentation.ui.user.UserBottomSheet
 
 @Composable
 fun ReposDetailScreen(
-    reposDetailViewModel: ReposDetailViewModel,
+    reposViewModel: ReposViewModel,
     userName: String,
     repoName: String
 ) {
-    LaunchedEffect(key1 = Unit) { reposDetailViewModel.fetchReposDetail(userName, repoName) }
-    when (val state = reposDetailViewModel.reposDetailState.collectAsStateWithLifecycle().value) {
+    LaunchedEffect(key1 = Unit) { reposViewModel.fetchReposDetail(userName, repoName) }
+    when (val state = reposViewModel.reposDetailState.collectAsStateWithLifecycle().value) {
         ReposDetailUiState.Idle -> {}
         ReposDetailUiState.Loading -> CircularLoading()
         is ReposDetailUiState.Success -> HandleSuccessUiState(
             state.data,
             userName,
-            reposDetailViewModel
+            reposViewModel
         )
 
         is ReposDetailUiState.Error -> {}
@@ -41,20 +41,20 @@ fun ReposDetailScreen(
 private fun HandleSuccessUiState(
     reposDetail: ReposDetail,
     userName: String,
-    reposDetailViewModel: ReposDetailViewModel
+    reposViewModel: ReposViewModel
 ) {
     var showBottomSheet by rememberSaveable { mutableStateOf(false) }
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     ReposDetailView(
         reposDetail = reposDetail,
         onButtonClicked = {
-            reposDetailViewModel.fetchUser(userName)
+            reposViewModel.fetchUser(userName)
             showBottomSheet = true
         }
     )
     if (showBottomSheet) {
         UserBottomSheet(
-            reposDetailViewModel = reposDetailViewModel,
+            reposViewModel = reposViewModel,
             userName = userName,
             sheetState = sheetState,
             closeBottomSheet = { showBottomSheet = false }

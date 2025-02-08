@@ -15,7 +15,7 @@ import com.example.soop2025.presentation.ui.screen.ReposSearchScreen
 fun MainNavHost(
     navController: NavHostController,
     reposSearchViewModel: ReposSearchViewModel,
-    reposDetailViewModel: ReposDetailViewModel
+    reposViewModel: ReposViewModel
 ) {
     NavHost(
         navController = navController,
@@ -42,7 +42,7 @@ fun MainNavHost(
             val repoName = backStackEntry.arguments?.getString("repoName") ?: ""
 
             ReposDetailScreen(
-                reposDetailViewModel,
+                reposViewModel,
                 userName,
                 repoName
             )

@@ -15,7 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private val reposSearchViewModel by viewModels<ReposSearchViewModel>()
-    private val reposDetailViewModel by viewModels<ReposDetailViewModel>()
+    private val reposViewModel by viewModels<ReposViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +29,7 @@ class MainActivity : ComponentActivity() {
                     MainNavHost(
                         navController,
                         reposSearchViewModel,
-                        reposDetailViewModel
+                        reposViewModel
                     )
                 }
             }

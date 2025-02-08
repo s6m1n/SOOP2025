@@ -7,20 +7,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.soop2025.presentation.ReposDetailViewModel
+import com.example.soop2025.presentation.ReposViewModel
 import com.example.soop2025.presentation.ui.UserUiState
 import com.example.soop2025.presentation.ui.component.CircularLoading
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UserBottomSheet(
-    reposDetailViewModel: ReposDetailViewModel,
+    reposViewModel: ReposViewModel,
     userName: String,
     sheetState: SheetState,
     closeBottomSheet: () -> Unit
 ) {
     val userState: UserUiState =
-        reposDetailViewModel.userState.collectAsStateWithLifecycle().value
+        reposViewModel.userState.collectAsStateWithLifecycle().value
 
     when (userState) {
         UserUiState.Idle -> {}
