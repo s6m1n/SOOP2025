@@ -2,6 +2,8 @@ package com.example.soop2025.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.soop2025.data.remote.ApiResponseHandler.Companion.onException
+import com.example.soop2025.data.remote.ApiResponseHandler.Companion.onSuccess
 import com.example.soop2025.data.remote.ResponseResult
 import com.example.soop2025.domain.ReposRepository
 import com.example.soop2025.domain.UserRepository
@@ -43,13 +45,13 @@ class ReposViewModel @Inject constructor(
         viewModelScope.launch {
             _userState.emit(UserUiState.Loading)
             userRepository.fetchUser(userName)
-                .collect {
-                    _userState.emit(
-                        when (it) {
-                            is ResponseResult.Exception -> UserUiState.Error(it.message)
-                            is ResponseResult.Success -> UserUiState.Success(it.data)
+                .collect { response ->
+                    response
+                        .onSuccess {
+                            _userState.emit(UserUiState.Success(it))
+                        }.onException { _, message ->
+                            _userState.emit(UserUiState.Error(message))
                         }
-                    )
                 }
         }
     }
