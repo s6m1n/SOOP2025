@@ -11,7 +11,10 @@ data class ReposSearches(
         get() = reposSearches.size / ITEMS_PER_PAGE + 1
 
     fun mergeWith(newReposSearch: ReposSearches): ReposSearches {
-        return this.copy(reposSearches = reposSearches + newReposSearch.reposSearches)
+        return this.copy(
+            reposSearches = reposSearches + newReposSearch.reposSearches,
+            totalCount = newReposSearch.totalCount
+        )
     }
 
     companion object {
