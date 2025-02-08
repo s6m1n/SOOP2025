@@ -11,7 +11,7 @@ class ApiResponseHandler @Inject constructor(
     private val errorResponseConverter: ErrorResponseConverter
 ) {
 
-    suspend fun <T : Any> handleApiResponse(execute: suspend () -> Response<T>): ResponseResult<T> {
+    suspend fun <T : Any> handle(execute: suspend () -> Response<T>): ResponseResult<T> {
         return try {
             val response: Response<T> = execute()
             val body: T? = response.body()

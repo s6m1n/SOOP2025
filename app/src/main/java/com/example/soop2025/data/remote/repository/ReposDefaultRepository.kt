@@ -21,7 +21,7 @@ class ReposDefaultRepository @Inject constructor(
         ownerName: String,
         repoName: String
     ): Flow<ResponseResult<Repos>> {
-        val responseResult = apiResponseHandler.handleApiResponse { reposApiService.getRepos(ownerName, repoName) }
+        val responseResult = apiResponseHandler.handle { reposApiService.getRepos(ownerName, repoName) }
         return flow {
             emit(
                 when (responseResult) {

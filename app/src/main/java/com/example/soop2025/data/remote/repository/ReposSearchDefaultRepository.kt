@@ -21,7 +21,7 @@ class ReposSearchDefaultRepository @Inject constructor(
         page: Int
     ): Flow<ResponseResult<ReposSearches>> {
         val responseResult =
-            apiResponseHandler.handleApiResponse { reposSearchApiService.searchRepositories(repositoryName, page) }
+            apiResponseHandler.handle { reposSearchApiService.searchRepositories(repositoryName, page) }
         return flow {
             emit(
                 when (responseResult) {

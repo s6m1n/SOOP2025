@@ -26,9 +26,9 @@ class UserDefaultRepository @Inject constructor(
         flow {
             coroutineScope {
                 val userDeferred =
-                    async { apiResponseHandler.handleApiResponse { userApiService.getUser(userName) } }
+                    async { apiResponseHandler.handle { userApiService.getUser(userName) } }
                 val userReposDeferred =
-                    async { apiResponseHandler.handleApiResponse { userApiService.getUserRepos(userName) } }
+                    async { apiResponseHandler.handle { userApiService.getUserRepos(userName) } }
 
                 val userResult = userDeferred.await()
                 val userReposResult = userReposDeferred.await()
