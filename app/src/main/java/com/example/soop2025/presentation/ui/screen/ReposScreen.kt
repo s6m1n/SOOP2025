@@ -13,7 +13,7 @@ import com.example.soop2025.domain.model.repos.ReposDetail
 import com.example.soop2025.presentation.ReposViewModel
 import com.example.soop2025.presentation.ui.ReposUiState
 import com.example.soop2025.presentation.ui.component.CircularLoading
-import com.example.soop2025.presentation.ui.repo.ReposDetailView
+import com.example.soop2025.presentation.ui.repo.ReposView
 import com.example.soop2025.presentation.ui.user.UserBottomSheet
 
 @Composable
@@ -45,8 +45,8 @@ private fun HandleSuccessUiState(
 ) {
     var showBottomSheet by rememberSaveable { mutableStateOf(false) }
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-    ReposDetailView(
-        reposDetail = repos,
+    ReposView(
+        repos = repos,
         onButtonClicked = {
             reposViewModel.fetchUser(userName)
             showBottomSheet = true

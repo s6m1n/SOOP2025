@@ -31,8 +31,8 @@ import com.example.soop2025.presentation.ui.component.RepoInformationText
 import com.example.soop2025.presentation.ui.formatMetricSuffix
 
 @Composable
-fun ReposDetailView(
-    reposDetail: ReposDetail,
+fun ReposView(
+    repos: ReposDetail,
     onButtonClicked: () -> Unit
 ) {
     Column(
@@ -42,11 +42,11 @@ fun ReposDetailView(
     ) {
         Spacer(modifier = Modifier.height(30.dp))
         Text(
-            text = reposDetail.repoName,
+            text = repos.repoName,
             fontSize = 25.sp,
             fontWeight = FontWeight.Bold
         )
-        reposDetail.language?.let {
+        repos.language?.let {
             Text(text = it)
         }
         Divider(
@@ -60,15 +60,15 @@ fun ReposDetailView(
         ) {
             RepoInformationText(
                 "Star",
-                formatMetricSuffix(reposDetail.starCount)
+                formatMetricSuffix(repos.starCount)
             )
             RepoInformationText(
                 "Watchers",
-                formatMetricSuffix(reposDetail.watchersCount)
+                formatMetricSuffix(repos.watchersCount)
             )
             RepoInformationText(
                 "Forks",
-                formatMetricSuffix(reposDetail.forksCount)
+                formatMetricSuffix(repos.forksCount)
             )
         }
         Divider(
@@ -83,14 +83,14 @@ fun ReposDetailView(
                 .fillMaxWidth()
         ) {
             CoilImage(
-                imageUrl = reposDetail.userProfileImageUrl,
+                imageUrl = repos.userProfileImageUrl,
                 contentDescription = stringResource(id = R.string.user_profile_image),
                 modifier = Modifier
                     .clip(CircleShape)
                     .size(40.dp)
             )
             Text(
-                text = reposDetail.userName,
+                text = repos.userName,
                 modifier = Modifier.weight(1F, true),
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis
@@ -103,7 +103,7 @@ fun ReposDetailView(
                 Text(text = "more")
             }
         }
-        reposDetail.description?.let {
+        repos.description?.let {
             Divider(
                 color = Color.LightGray,
                 modifier = Modifier.padding(vertical = 20.dp)
@@ -113,18 +113,18 @@ fun ReposDetailView(
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Medium
             )
-            Text(text = reposDetail.description)
+            Text(text = repos.description)
         }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun ReposDetailViewPreview() {
-    ReposDetailView(reposDetail = dummyReposDetail) {}
+private fun ReposViewPreview() {
+    ReposView(repos = dummyRepos) {}
 }
 
-private val dummyReposDetail = ReposDetail(
+private val dummyRepos = ReposDetail(
     id = 3111,
     repoName = "Sallie Wong",
     description = null,
