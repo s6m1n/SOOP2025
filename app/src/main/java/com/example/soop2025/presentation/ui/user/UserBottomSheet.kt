@@ -1,5 +1,6 @@
 package com.example.soop2025.presentation.ui.user
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,6 +18,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -24,9 +26,9 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.soop2025.R
 import com.example.soop2025.domain.model.user.UserDetail
-import com.example.soop2025.domain.model.user.UserRepositories
 import com.example.soop2025.presentation.ReposDetailViewModel
-import com.example.soop2025.presentation.ui.UiState
+import com.example.soop2025.presentation.ui.UserDetailUiState
+import com.example.soop2025.presentation.ui.component.CircularLoading
 import com.example.soop2025.presentation.ui.component.CoilImage
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -37,30 +39,35 @@ fun UserBottomSheet(
     sheetState: SheetState,
     closeBottomSheet: () -> Unit
 ) {
-    val userDetailState: UiState<UserDetail> =
+    val userDetailState: UserDetailUiState =
         reposDetailViewModel.userDetailState.collectAsStateWithLifecycle().value
-    val userRepoState: UiState<UserRepositories> =
-        reposDetailViewModel.userRepoState.collectAsStateWithLifecycle().value
 
-    LaunchedEffect(key1 = Unit) { reposDetailViewModel.fetchUser(userName) }
-    LaunchedEffect(key1 = Unit) { reposDetailViewModel.fetchUserRepos(userName) }
-
-    if (userDetailState is UiState.Success && userRepoState is UiState.Success) {
-        HandleSuccessUiState(
+    when (userDetailState) {
+        is UserDetailUiState.Success -> HandleSuccessUserDetailUiState(
             userDetailState.data,
-            userRepoState.data,
             closeBottomSheet,
             sheetState,
             userName
         )
+
+        is UserDetailUiState.Error -> {
+            val context = LocalContext.current
+            LaunchedEffect(Unit) {
+                Toast.makeText(context, userDetailState.message, Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        UserDetailUiState.Idle -> {}
+        UserDetailUiState.Loading -> {
+            CircularLoading()
+        }
     }
 }
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-private fun HandleSuccessUiState(
+private fun HandleSuccessUserDetailUiState(
     userDetail: UserDetail,
-    userRepo: UserRepositories,
     closeBottomSheet: () -> Unit,
     sheetState: SheetState,
     userName: String
@@ -104,11 +111,11 @@ private fun HandleSuccessUiState(
             )
             UserDetailText(
                 titleText = "Languages",
-                value = userRepo.languages.joinToString(", ")
+                value = userDetail.languages.joinToString(", ")
             )
             UserDetailText(
                 titleText = "Repositories",
-                value = userRepo.repositoryCount.toString()
+                value = userDetail.repositoryCount.toString()
             )
             userDetail.bio?.let {
                 UserDetailText(
