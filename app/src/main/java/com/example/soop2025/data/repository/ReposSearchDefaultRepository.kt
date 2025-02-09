@@ -1,5 +1,6 @@
 package com.example.soop2025.data.repository
 
+import com.example.soop2025.data.local.language.LanguageDataSource
 import com.example.soop2025.data.model.mapper.toReposSearches
 import com.example.soop2025.data.remote.ApiResponseHandler
 import com.example.soop2025.data.remote.NetworkFailException
@@ -14,6 +15,7 @@ import javax.inject.Inject
 
 class ReposSearchDefaultRepository @Inject constructor(
     private val reposSearchApiService: ReposSearchApiService,
+    private val languageDataSource: LanguageDataSource,
     private val apiResponseHandler: ApiResponseHandler
 ) : ReposSearchRepository {
     override suspend fun searchRepositories(
@@ -25,9 +27,8 @@ class ReposSearchDefaultRepository @Inject constructor(
         return flow {
             when (responseResult) {
                 is Success -> {
-                    emit(
-                        responseResult.data.toReposSearches()
-                    )
+                    val colors = languageDataSource.loadLanguageColors()
+                    emit(responseResult.data.toReposSearches(colors))
                 }
 
                 is Exception -> throw NetworkFailException(responseResult.e, responseResult.message)

@@ -1,7 +1,9 @@
 package com.example.soop2025.presentation.search.component
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -16,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -25,6 +28,7 @@ import androidx.compose.ui.unit.sp
 import com.example.soop2025.R
 import com.example.soop2025.domain.model.repossearch.ReposSearch
 import com.example.soop2025.domain.model.repossearch.ReposSearchOwner
+import com.example.soop2025.domain.model.shared.Language
 import com.example.soop2025.presentation.ui.component.CoilImage
 import com.example.soop2025.presentation.util.formatMetricSuffix
 
@@ -73,21 +77,30 @@ fun SearchItem(
         Row(
             modifier = Modifier
                 .fillMaxWidth(1f)
-                .wrapContentHeight(Alignment.CenterVertically)
+                .wrapContentHeight(),
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
                 painter = painterResource(id = R.drawable.icon_star),
-                contentDescription = stringResource(id = R.string.star),
-                modifier = Modifier
-                    .align(Alignment.CenterVertically)
-                    .padding(end = 5.dp)
+                contentDescription = stringResource(id = R.string.star)
             )
             Text(
                 text = formatMetricSuffix(reposSearch.stargazersCount),
-                modifier = Modifier.padding(end = 10.dp)
+                modifier = Modifier.padding(start = 5.dp)
             )
             reposSearch.language?.let {
-                Text(text = reposSearch.language)
+                val parsedColor = Color(android.graphics.Color.parseColor(reposSearch.language.colorCode))
+                Box(
+                    modifier = Modifier
+                        .padding(start = 10.dp)
+                        .size(12.dp)
+                        .clip(CircleShape)
+                        .background(parsedColor)
+                )
+                Text(
+                    text = reposSearch.language.language,
+                    modifier = Modifier.padding(start = 5.dp)
+                )
             }
         }
     }
@@ -111,5 +124,8 @@ fun getDummyRepo(id: Int) = ReposSearch(
     owner = dummyOwner,
     description = "Repository Description 입니다",
     stargazersCount = 2718,
-    language = "Kotlin"
+    language = Language(
+        "Kotlin",
+        "#A97BFF"
+    )
 )
