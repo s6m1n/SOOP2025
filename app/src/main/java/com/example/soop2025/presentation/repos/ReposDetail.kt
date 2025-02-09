@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.sp
 import com.example.soop2025.R
 import com.example.soop2025.domain.model.repos.Repos
 import com.example.soop2025.presentation.repos.component.RepoInformationText
+import com.example.soop2025.presentation.repos.component.RoundedButton
 import com.example.soop2025.presentation.ui.component.CoilImage
 import com.example.soop2025.presentation.util.formatMetricSuffix
 
@@ -49,7 +50,10 @@ fun ReposDetail(
             fontWeight = FontWeight.Bold
         )
         repos.language?.let {
-            Text(text = it)
+            RoundedButton(
+                text = it,
+                modifier = Modifier.padding(top = 8.dp)
+            )
         }
         HorizontalDivider(
             color = Color.LightGray,
@@ -133,7 +137,7 @@ private val dummyRepos = Repos(
     starCount = 2237,
     watchersCount = 34265,
     forksCount = 2646,
-    language = null,
+    language = "Kotlin",
     userName = "Malinda Merritt",
     userProfileImageUrl = "http://www.bing.com/search?q=elit"
 )
