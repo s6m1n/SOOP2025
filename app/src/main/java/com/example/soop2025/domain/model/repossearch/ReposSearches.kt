@@ -4,6 +4,12 @@ data class ReposSearches(
     val reposSearches: List<ReposSearch>,
     val totalCount: Int
 ) {
+    init {
+        require(reposSearches.size <= totalCount) {
+            "reposSearches의 크기(${reposSearches.size})는 totalCount($totalCount) 보다 크지 않아야 합니다."
+        }
+    }
+
     val hasNextPage: Boolean
         get() = reposSearches.size < totalCount
 
