@@ -30,6 +30,7 @@ import com.example.soop2025.domain.model.repos.Repos
 import com.example.soop2025.presentation.repos.component.RepoInformationText
 import com.example.soop2025.presentation.repos.component.RoundedButton
 import com.example.soop2025.presentation.ui.component.CoilImage
+import com.example.soop2025.presentation.util.debounced
 import com.example.soop2025.presentation.util.formatMetricSuffix
 
 @Composable
@@ -37,6 +38,8 @@ fun ReposDetail(
     repos: Repos,
     onButtonClicked: () -> Unit
 ) {
+    val actionDebounce = debounced(onButtonClicked)
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -102,9 +105,7 @@ fun ReposDetail(
                 overflow = TextOverflow.Ellipsis
             )
             Button(
-                onClick = {
-                    onButtonClicked()
-                }
+                onClick = { actionDebounce() }
             ) {
                 Text(text = "more")
             }

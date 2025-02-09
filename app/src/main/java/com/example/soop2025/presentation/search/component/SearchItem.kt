@@ -30,6 +30,7 @@ import com.example.soop2025.domain.model.repossearch.ReposSearch
 import com.example.soop2025.domain.model.repossearch.ReposSearchOwner
 import com.example.soop2025.domain.model.shared.Language
 import com.example.soop2025.presentation.ui.component.CoilImage
+import com.example.soop2025.presentation.util.debounced
 import com.example.soop2025.presentation.util.formatMetricSuffix
 
 @Composable
@@ -37,11 +38,13 @@ fun SearchItem(
     reposSearch: ReposSearch,
     onItemClicked: () -> Unit
 ) {
+    val actionDebounce = debounced(onItemClicked)
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .clickable {
-                onItemClicked()
+                actionDebounce()
             }
             .padding(all = 15.dp)
     ) {
