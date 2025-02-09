@@ -107,7 +107,7 @@ fun ReposDetail(
             Button(
                 onClick = { actionDebounce() }
             ) {
-                Text(text = "more")
+                Text(text = stringResource(R.string.more))
             }
         }
         repos.description?.let {
