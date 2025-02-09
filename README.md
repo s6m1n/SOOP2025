@@ -6,7 +6,8 @@
 
 |검색|무한 스크롤|레포지토리 상세, 유저 상세|
 |---|---|---|
-|![image](https://github.com/user-attachments/assets/a189d61b-b215-4880-8bb0-1dab1ee0cc05)|![image](https://github.com/user-attachments/assets/49110625-cc20-4085-98c6-0b6d31e0e67f)|![image](https://github.com/user-attachments/assets/2c655e5b-6659-422d-bb75-87b14090c5bf)|
+|![1](https://github.com/user-attachments/assets/07b7cfa2-ae73-4c92-bb8f-64ad19e907bf)|![2](https://github.com/user-attachments/assets/2a266d14-e133-45bd-99bd-271318fc1aef)|![3](https://github.com/user-attachments/assets/9e98b746-232f-4f42-ac95-7bfcbf8cfc0b)|
+
 
 <br>
 <br>
