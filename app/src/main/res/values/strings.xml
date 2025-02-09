@@ -3,4 +3,8 @@
     <string name="reading_glasses">돋보기</string>
     <string name="star">별</string>
     <string name="user_profile_image">유저 프로필 이미지</string>
+    <string name="followers">Followers</string>
+    <string name="followings">Followings</string>
+    <string name="languages">Languages</string>
+    <string name="repositories">Repositories</string>
 </resources>

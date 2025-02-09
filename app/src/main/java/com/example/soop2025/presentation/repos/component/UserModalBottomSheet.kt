@@ -62,19 +62,19 @@ fun UserModalBottomSheet(
                 )
             }
             UserText(
-                titleText = "Followers",
+                titleText = stringResource(id = R.string.followers),
                 value = user.followers.toString()
             )
             UserText(
-                titleText = "Following",
+                titleText = stringResource(id = R.string.followings),
                 value = user.following.toString()
             )
             UserText(
-                titleText = "Languages",
+                titleText = stringResource(id = R.string.languages),
                 value = user.languages.joinToString(", ")
             )
             UserText(
-                titleText = "Repositories",
+                titleText = stringResource(id = R.string.repositories),
                 value = user.repositoryCount.toString()
             )
             user.bio?.let {
