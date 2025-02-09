@@ -1,5 +1,6 @@
 package com.example.soop2025.di
 
+import com.example.soop2025.BuildConfig.BASE_URL
 import com.example.soop2025.data.model.shared.ErrorResponse
 import com.example.soop2025.data.remote.ErrorResponseConverter
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
@@ -58,6 +59,5 @@ internal object NetworkModule {
         }
     }
 
-    private const val BASE_URL = "https://api.github.com/" // local properties
     private const val CONTENT_TYPE = "application/json"
 }

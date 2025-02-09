@@ -1,3 +1,11 @@
+import java.io.FileInputStream
+import java.util.Properties
+
+val localProperties =
+    Properties().apply {
+        load(FileInputStream(rootProject.file("local.properties")))
+    }
+
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
@@ -10,12 +18,19 @@ android {
     namespace = "com.example.soop2025"
     compileSdk = 34
 
+    buildFeatures {
+        defaultConfig {
+            buildConfig = true
+        }
+    }
     defaultConfig {
         applicationId = "com.example.soop2025"
         minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
+
+        buildConfigField("String", "BASE_URL", "${localProperties["base_url"]}")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
