@@ -30,19 +30,14 @@ com.example.soop2025
 
 
 ## UML 다이어그램
-
-![graphviz (1)](https://github.com/user-attachments/assets/f41e2bcc-0d41-457b-aea1-6565da17b5c4)<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="864pt" height="381pt" viewBox="0.00 0.00 864.00 381.03">
-
-
-<br>
-
-
-## UI 다이어그램
 ![graphviz](https://github.com/user-attachments/assets/3d2f2c38-0a5a-4713-a700-0c30f1bec76b)<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="864pt" height="298pt" viewBox="0.00 0.00 864.00 298.12">
 
-
 <br>
 
+## Presentation Layer 다이어그램
+![graphviz (1)](https://github.com/user-attachments/assets/f41e2bcc-0d41-457b-aea1-6565da17b5c4)<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="864pt" height="381pt" viewBox="0.00 0.00 864.00 381.03">
+
+<br>
 
 ## **Data Layer (데이터 계층)**
 
